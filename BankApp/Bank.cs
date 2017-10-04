@@ -68,9 +68,6 @@ namespace BankApp
                     case 0:
                         exitApp = true;
                         break;
-                    default:
-
-                        break;
                 }
 
             } while (!exitApp);
@@ -83,21 +80,6 @@ namespace BankApp
             Console.WriteLine("1) Sök kund");
             Console.WriteLine("2) Visa kundbild");
             Console.WriteLine();
-        }
-
-        private int ReadIntFromKeyboard()
-        {
-            int number;
-            string input;
-
-            //Run until a valid number has been typed
-            do
-            {
-                Console.Write("> ");
-                input = Console.ReadLine();
-            } while (!int.TryParse(input, out number));
-
-            return number;
         }
 
         private void CustomerSearchMenu()
@@ -171,9 +153,17 @@ namespace BankApp
                 }
             }
 
+            //Search for customer information
+            CustomerInfoSearch(searchNumber);
+
+            WaitForKey();
+        }
+
+        private void CustomerInfoSearch(int customerNumber)
+        {
             //Get info based on owners customer number
-            Customer customer = GetCustomerByNumber(searchNumber);
-            List<Account> filtredAccounts = AccountsByOwnerNumber(searchNumber);
+            Customer customer = GetCustomerByNumber(customerNumber);
+            List<Account> filtredAccounts = AccountsByOwnerNumber(customerNumber);
 
             //if a customer was found, print info
             if (customer != null)
@@ -185,19 +175,37 @@ namespace BankApp
                     (customer.Region != "" ? $"{customer.Region}, " : ""), customer.Country);
                 Console.WriteLine("Telefonnummer: {0}", customer.PhoneNumber);
 
+                decimal sum = 0; //To calulate total sum of customers accounts
+
                 //Info about customers accounts
                 Console.WriteLine("\nKonton");
                 foreach (var account in filtredAccounts)
                 {
                     Console.WriteLine("{0}: {1} kr", account.AccountNumber, account.Balance);
+                    sum += account.Balance;
                 }
+                Console.WriteLine("\nTotalt på alla konton: {0} kr.", sum);
+
             }
             else
             {
                 Console.WriteLine("\nKunde inte hitta kund eller konto.");
             }
+        }
 
-            WaitForKey();
+        private int ReadIntFromKeyboard()
+        {
+            int number;
+            string input;
+
+            //Run until a valid number has been typed
+            do
+            {
+                Console.Write("> ");
+                input = Console.ReadLine();
+            } while (!int.TryParse(input, out number));
+
+            return number;
         }
 
         public void WaitForKey()
@@ -205,6 +213,8 @@ namespace BankApp
             Console.WriteLine("\nTryck valfri tanget för att gå tillbaka till meny...");
             Console.ReadKey();
         }
+
+
 
         //Filter the customer list based on if name or city contains the string
         private List<Customer> CustomersByNameOrCity(string customerInfo)
