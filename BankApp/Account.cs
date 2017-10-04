@@ -16,6 +16,8 @@ namespace BankApp
 
         private decimal _saveInterest;
 
+        private decimal _debtInterest;
+
         private decimal _creditLimit;
 
         private decimal _debtLimit;
