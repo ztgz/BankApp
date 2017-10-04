@@ -8,6 +8,10 @@ namespace BankApp
 {
     class Journal
     {
-        
+        public int AccountNr { get; private set; }
+
+        public int Amount { get; private set; }
+
+        public string Notes { get; private set; }
     }
 }
