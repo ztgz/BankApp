@@ -13,7 +13,7 @@ namespace BankApp
             //Create the bank
             Bank bank = new Bank();
             
-            //run it
+            //Run the bank app
             bank.Run();
         }
     }
