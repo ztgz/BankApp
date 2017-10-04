@@ -12,33 +12,6 @@ namespace BankApp
 
         private List<Account> accounts = new List<Account>();
 
-        public Bank()
-        {
-            /*Test data*/
-            Customer cust = new Customer(1005, "559268-7528", "Berglunds snabbköp", "Berguvsvägen  8",
-                "Luleå", "", "S-958 22", "Sweden", "0921-12 34 65");
-            customers.Add(cust);
-
-            cust = new Customer(1024, "556392-8406", "Folk och fä HB", "Åkergatan 24",
-                "Bräcke", "", "S-844 67", "Sweden", "0695-34 67 21");
-            customers.Add(cust);
-
-            cust = new Customer(1032, "551553-1910", "Great Lakes Food Market", "2732 Baker Blvd.",
-                "Eugene", "OR", "97403", "USA", "(503) 555-7555");
-            customers.Add(cust);
-
-            Account account = new Account(13019, 1005, 1488.80m);
-            accounts.Add(account);
-            account = new Account(13020, 1005, 613.20m);
-            accounts.Add(account);
-            account = new Account(13093, 1024, 695.62m);
-            accounts.Add(account);
-            account = new Account(13128, 1032, 392.20m);
-            accounts.Add(account);
-            account = new Account(13130, 1032, 4807.00m);
-            accounts.Add(account);
-        }
-
         //The main loop of the bank app
         public void Run()
         {
@@ -65,6 +38,14 @@ namespace BankApp
                         //Show info for a customer
                         CustomerInfoMenu();
                         break;
+                    case 3:
+                        //Create new customer
+                        CustomerCreateMenu();
+                        break;
+                    case 5:
+                        //Create a new account menu
+                        NewAccountMenu();
+                        break;
                     case 0:
                         exitApp = true;
                         break;
@@ -79,6 +60,8 @@ namespace BankApp
             Console.WriteLine("0) Avsluta och spara");
             Console.WriteLine("1) Sök kund");
             Console.WriteLine("2) Visa kundbild");
+            Console.WriteLine("3) Skapa kund");
+            Console.WriteLine("5) Lägg till konto");
             Console.WriteLine();
         }
 
@@ -159,6 +142,78 @@ namespace BankApp
             WaitForKey();
         }
 
+        private void NewAccountMenu()
+        {
+            Console.Clear();
+
+            //Get customernumber from console
+            Console.WriteLine("* Skapa konto för kund *");
+            Console.Write("Kundnummer? ");
+            string strNumber = Console.ReadLine();
+
+            //If input could be parsed to int and the number is four digits
+            if (int.TryParse(strNumber, out int custumerNumber) && custumerNumber >= 1000 && custumerNumber < 10000)
+            {
+                //Get the customer
+                Customer customer = GetCustomerByNumber(custumerNumber);
+                
+                //If customer was found create account
+                if (customer != null)
+                {
+                    CreateAccount(customer);
+                }
+                else
+                {
+                    Console.WriteLine("\nCould not find customer.");    
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("\nKontonummer måste anges med ett 4-siffrigt nummber (t.ex. 1201)");
+            }
+
+            WaitForKey();
+        }
+
+        private void CustomerCreateMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Skapa ny kund *");
+
+            //Get customer number info
+            Console.Write("Organisationsnummer? ");
+            string orgNumber = Console.ReadLine();
+
+            Console.Write("Namn? ");
+            string name = Console.ReadLine();
+
+            Console.Write("Adress? ");
+            string adress = Console.ReadLine();
+
+            Console.Write("Stad? ");
+            string city = Console.ReadLine();
+
+            Console.Write("Region? ");
+            string region = Console.ReadLine();
+
+            Console.Write("Postnummer? ");
+            string postNumber = Console.ReadLine();
+
+            Console.Write("Land? ");
+            string country = Console.ReadLine();
+
+            Console.Write("Telefon? ");
+            string phone = Console.ReadLine();
+
+            //Create the customer
+            CreateCustomer(orgNumber, name, adress, city, region, postNumber, country, phone);
+
+            WaitForKey();
+            
+        }
+
+        //Print information about customer based on the customer number
         private void CustomerInfoSearch(int customerNumber)
         {
             //Get info based on owners customer number
@@ -189,7 +244,7 @@ namespace BankApp
             }
             else
             {
-                Console.WriteLine("\nKunde inte hitta kund eller konto.");
+                Console.WriteLine("\nKunde inte hitta kund.");
             }
         }
 
@@ -208,13 +263,116 @@ namespace BankApp
             return number;
         }
 
-        public void WaitForKey()
+        private void WaitForKey()
         {
             Console.WriteLine("\nTryck valfri tanget för att gå tillbaka till meny...");
             Console.ReadKey();
         }
 
+        //Create new account
+        private void CreateAccount(Customer customer)
+        {
+            //Order the accounts based on account number
+            OrderAccounts();
 
+            //Get the number of the last account if there are any accounts, otherwise put last to 9999
+            int lastAccountNumber = accounts.Count > 0 ? accounts.LastOrDefault().AccountNumber : 9999;
+
+            //If the last account number has been reached, look for free spaces in list
+            if (lastAccountNumber >= 99999)
+            {
+                int addToNumber = 10000; //What you need to add to i to get the equivalent account number in the loop
+                
+                //loop through all account numbers to see if spot is free
+                for (int i = 0; i+addToNumber < 100_000; i++)
+                {
+                    //there is a free spot, store the number before the free spot
+                    if (accounts[i].AccountNumber != i+addToNumber)
+                    {
+                        lastAccountNumber = i+addToNumber-1;
+                        break;
+                    }
+                }
+
+                //If no new spot where found
+                if (lastAccountNumber >= 99999)
+                {
+                    Console.WriteLine("\nKontakta admin. Alla kontoplatser är upptagna");
+                    return;
+                }
+            }
+
+            int newAccountNumber = lastAccountNumber + 1;
+            
+            //Add the account to the list
+            AddAccount(newAccountNumber, customer.CustomerNumber, 0);
+
+            //Info that account was created
+            Console.WriteLine("\nKonto {0} skapades för kund {1} ({2})", newAccountNumber, customer.CustomerNumber, customer.Name);
+        }
+
+        //Create new customer
+        private void CreateCustomer(string organisationNumber, string name, string adress,
+            string city, string region, string postNumber, string country, string phoneNumber)
+        {
+            //Order customers by customer number
+            OrderCustomers();
+
+            //Find a free customer number, if no customers set last account to 999, to make new account to 1000
+            int lastCustomerNumber = customers.Count > 0 ? customers.LastOrDefault().CustomerNumber : 999;
+
+            //If the last customer number has been reached, look for free spaces in list
+            if (lastCustomerNumber >= 9999)
+            {
+                int addToNumber = 1000; //What you need to add to i to get the equivalent customer number in the loop
+
+                //loop through all customer numbers to see if spot is free
+                for (int i = 0; i + addToNumber < 100_00; i++)
+                {
+                    //there is a free spot, store the number before the free spot
+                    if (customers[i].CustomerNumber != i + addToNumber)
+                    {
+                        lastCustomerNumber = i + addToNumber - 1;
+                        break;
+                    }
+                }
+
+                //If no new spot where found
+                if (lastCustomerNumber >= 9999)
+                {
+                    Console.WriteLine("\nKontakta admin. Kundlista är ful.");
+                    return;
+                }
+            }
+
+            int newCustomerNumber = lastCustomerNumber + 1;
+
+            //Add the account to the list
+            AddCustomer(newCustomerNumber, organisationNumber, name, adress,
+                city, region, postNumber, country, phoneNumber);
+
+            //Info that customer was created
+            Console.WriteLine("\nKund {0} skapades", newCustomerNumber);
+
+            //Skapa konto åt kund
+            Customer customer = GetCustomerByNumber(newCustomerNumber);
+            CreateAccount(customer);
+
+        }
+
+        //Add account to list of accounts
+        private void AddAccount(int accountNumber, int ownersCustomerNumber, decimal balance)
+        {
+            accounts.Add(new Account(accountNumber, ownersCustomerNumber, balance));
+        }
+        
+        //Add customer to the list of customers
+        private void AddCustomer(int customerNumber, string organisationNumber, string name, string adress,
+            string city, string region, string postNumber, string country, string phoneNumber)
+        {
+            customers.Add(new Customer(customerNumber, organisationNumber, name, adress, city,
+                region, postNumber, country, phoneNumber));
+        }
 
         //Filter the customer list based on if name or city contains the string
         private List<Customer> CustomersByNameOrCity(string customerInfo)
@@ -233,7 +391,8 @@ namespace BankApp
         //Filter the accounts list by owner
         private List<Account> AccountsByOwnerNumber(int number)
         {
-            var filtredAccounts = accounts.Where(a => a.OwnersCustomerNumber == number);
+            //search for the accounts based on criteria
+            var filtredAccounts = accounts.Where(a => a.OwnersCustomerNumber == number).OrderBy(a => a.AccountNumber);
             return filtredAccounts.ToList();
         }
 
@@ -242,6 +401,18 @@ namespace BankApp
         {
             Customer customer = customers.SingleOrDefault(c => c.CustomerNumber == number);
             return customer;
+        }
+
+        //Order customers by customer number
+        private void OrderCustomers()
+        {
+            customers = customers.OrderBy(c => c.CustomerNumber).ToList();
+        }
+
+        //Order accounts by account number
+        private void OrderAccounts()
+        {
+            accounts = accounts.OrderBy(a => a.AccountNumber).ToList();
         }
 
         //Get the owner of an account
