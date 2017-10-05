@@ -208,28 +208,29 @@ namespace BankApp
             Console.WriteLine("* Skapa ny kund *");
 
             //Get customer number info
-            Console.Write("Organisationsnummer? ");
-            string orgNumber = Console.ReadLine();
+            Console.WriteLine("Organisationsnummer?");
+            string orgNumber = ReadStringFromKeyboard();
 
-            Console.Write("Namn? ");
-            string name = Console.ReadLine();
+            Console.WriteLine("Namn?");
+            string name = ReadStringFromKeyboard();
 
-            Console.Write("Adress? ");
-            string adress = Console.ReadLine();
+            Console.WriteLine("Adress?");
+            string adress = ReadStringFromKeyboard();
 
-            Console.Write("Stad? ");
-            string city = Console.ReadLine();
+            Console.WriteLine("Stad?");
+            string city = ReadStringFromKeyboard();
 
-            Console.Write("Region? ");
+            //It's optional the input region
+            Console.WriteLine("Region?");
             string region = Console.ReadLine();
 
-            Console.Write("Postnummer? ");
-            string postNumber = Console.ReadLine();
+            Console.WriteLine("Postnummer?");
+            string postNumber = ReadStringFromKeyboard();
 
-            Console.Write("Land? ");
+            Console.WriteLine("Land?");
             string country = Console.ReadLine();
 
-            Console.Write("Telefon? ");
+            Console.WriteLine("Telefon?");
             string phone = Console.ReadLine();
 
             //Create the customer
@@ -274,6 +275,7 @@ namespace BankApp
             }
         }
 
+        //Forces the user to input a number
         private int ReadIntFromKeyboard()
         {
             int number;
@@ -289,10 +291,26 @@ namespace BankApp
             return number;
         }
 
+        //Infomessage and wait for a keypress to continue
         private void WaitForKey()
         {
             Console.WriteLine("\nTryck valfri tanget för att gå tillbaka till meny...");
             Console.ReadKey();
+        }
+
+        //forces the user to input non-empty string
+        private string ReadStringFromKeyboard()
+        {
+            while (true)
+            {
+                Console.Write("> ");
+                string input = Console.ReadLine();
+
+                if (input != "")
+                    return input;
+
+                Console.WriteLine("Fältet kan inte vara tomt försök igen");
+            }
         }
 
         //Create new account
