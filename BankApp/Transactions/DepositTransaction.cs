@@ -8,7 +8,7 @@ namespace BankApp.Transactions
 {
     class DepositTransaction : Transaction
     {
-        public DepositTransaction(int account, decimal amount, decimal accountBalance) : base()
+        public DepositTransaction(int account, decimal amount, decimal accountBalance)
         {
             _date = DateTime.Now;
             _amount = amount;

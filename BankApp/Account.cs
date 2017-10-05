@@ -43,11 +43,17 @@ namespace BankApp
         {
             //No positive amounts cannot be withdrawn from account
             if (amount <= 0.0m)
+            {
+                Console.WriteLine("\nKan enbart ta ut positiva belopp från kontot.");
                 return 0.0m;
+            }
 
             //Cannot withdraw, balance would be to low
             if (Balance - amount < 0 - _creditLimit)
+            {
+                Console.WriteLine("\nFinns ej tillräckligt med pengar på kontot för att ta ut {0} kr.", amount);
                 return 0.0m;
+            }
 
             //It's possible to withdraw the amount
             Balance -= amount;

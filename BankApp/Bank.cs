@@ -89,9 +89,17 @@ namespace BankApp
                         //Create a new account menu
                         AccountRemoveMenu();
                         break;
-                    case 8:
+                    case 7:
                         //Deposit money to an account
                         DepositMenu();
+                        break;
+                    case 8:
+                        //Withdraw money from an account
+                        WithdrawalMenu();
+                        break;
+                    case 9:
+                        //Withdraw money from an account
+                        TransferMoneyMenu();
                         break;
                     case 0:
                         exitApp = true;
@@ -111,7 +119,9 @@ namespace BankApp
             Console.WriteLine("4) Ta bort kund");
             Console.WriteLine("5) Lägg till konto");
             Console.WriteLine("6) Ta bort konto");
-            Console.WriteLine("8) Insättning på konto");
+            Console.WriteLine("7) Insättning på konto");
+            Console.WriteLine("8) Uttag från konto");
+            Console.WriteLine("9) Överföring mellan konton");
             Console.WriteLine();
         }
 
@@ -276,12 +286,6 @@ namespace BankApp
             WaitForKey();
         }
 
-        //Returns true if number is of customer number format
-        private bool IsCustomerNumberFormat(int number)
-        {
-            return number > 999 && number < 10000;
-        }
-
         private void AccountRemoveMenu()
         {
             Console.Clear();
@@ -305,7 +309,7 @@ namespace BankApp
             Console.Clear();
             Console.WriteLine("* Insättring *");
 
-            Console.WriteLine("Sätt in pengar till konto?");
+            Console.WriteLine("Sätt in pengar till konto, ange konto:");
             int accountNumber = ReadIntFromKeyboard();
 
             //check if account number is valid && Exsits
@@ -335,6 +339,53 @@ namespace BankApp
 
             WaitForKey();
 
+        }
+
+        private void WithdrawalMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Uttag *");
+
+            Console.WriteLine("Sätt in pengar till konto, ange konto:");
+            int accountNumber = ReadIntFromKeyboard();
+
+            //check if account number is valid && Exsits
+            if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
+            {
+                //Get the account
+                Account account = GetAccountByNumber(accountNumber);
+
+                //Get the amount to deposit
+                Console.WriteLine("Hur mycket vill du ta ut? (saldo = {0})", account.Balance);
+                decimal amount = ReadDecimalFromKeyboard();
+
+                //How much money that were recived
+                decimal recivedAmmount = account.WithdrawRequest(amount);
+
+                //If withdrawal was accepted
+                if (recivedAmmount > 0)
+                {
+                    //Log the transaction
+                    journal.Withdrawal(account.AccountNumber, recivedAmmount, account.Balance);
+
+                    Console.WriteLine("\nEtt uttag på {0} kr från konto {1} genomfördes.", recivedAmmount, accountNumber);
+                }
+            }
+
+            WaitForKey();
+        }
+
+        private void TransferMoneyMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Transfer money");
+
+        }
+
+        //Returns true if number is of customer number format
+        private bool IsCustomerNumberFormat(int number)
+        {
+            return number > 999 && number < 10000;
         }
 
         public bool IsAccountNumberValid(int accountNumber)

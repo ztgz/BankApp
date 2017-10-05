@@ -71,9 +71,9 @@ namespace BankAppTests
         {
             Account account = new Account(10000, 1000, 100);
 
-            decimal expected = 70;
+            decimal expected = 100;
 
-            decimal actual = account.WithdrawRequest(70);
+            decimal actual = account.WithdrawRequest(100);
 
             Assert.AreEqual(expected, actual);
         }

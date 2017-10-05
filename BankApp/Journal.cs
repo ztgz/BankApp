@@ -16,10 +16,17 @@ namespace BankApp
             dailyTransactions = new List<Transaction>();
         }
 
-        public void Deposit(int toAccount, decimal amount, decimal balance)
+        public void Deposit(int toAccount, decimal amount, decimal accountBalance)
         {
-            Transaction transaction = new DepositTransaction(toAccount, amount, balance);
+            Transaction transaction = new DepositTransaction(toAccount, amount, accountBalance);
             dailyTransactions.Add(transaction);
         }
+
+        public void Withdrawal(int fromAccount, decimal amount, decimal accountBalance)
+        {
+            Transaction transaction = new WithdrawalTransaction(fromAccount, amount, accountBalance);
+            dailyTransactions.Add(transaction);
+        }
+
     }
 }
