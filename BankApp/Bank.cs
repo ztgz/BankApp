@@ -139,17 +139,9 @@ namespace BankApp
 
             //Get input from user
             Console.WriteLine("* Visa kundbild *");
-            Console.WriteLine("Kundnummer eller kontonummer: ");
+            Console.WriteLine("Ange kundnummer eller kontonummer: ");
 
-            string customerSearch = Console.ReadLine();
-
-            //if owner didn't search for an number, return to main menu
-            if(!int.TryParse(customerSearch, out int searchNumber))
-            {
-                Console.WriteLine("\nDu måste ange kundnummer eller kontonummer som en siffra.");
-                WaitForKey();
-                return;
-            }
+            int searchNumber = ReadIntFromKeyboard();
 
             //A customer number has 4 digits and a account number have 5
             //Otherwise it's a Invalid number 
@@ -167,23 +159,20 @@ namespace BankApp
             //If user searched for an account number, try to get owner of account
             if (searchNumber >= 10000 && searchNumber < 100_000)
             {
-                int? customerNumber = GetOwnerOfAccount(searchNumber);
-
-                //If owner was found, set searchNumber to customerNumber
-                if (customerNumber != null)
+                if (AccountExist(searchNumber))
                 {
-                    searchNumber = customerNumber.Value;
+                    searchNumber = GetOwnerOfAccount(searchNumber).Value;
                 }
                 else
                 {
-                    Console.WriteLine("\nAngivet konto kunde inte hittas.");
+                    //Account do not exsist. Hold and return to menu
                     WaitForKey();
                     return;
                 }
             }
 
             //Search for customer information
-            CustomerInfoSearch(searchNumber);
+            CustomerInfo(searchNumber);
 
             WaitForKey();
         }
@@ -198,7 +187,7 @@ namespace BankApp
             string strNumber = Console.ReadLine();
 
             //If input could be parsed to int and the number is four digits
-            if (int.TryParse(strNumber, out int custumerNumber) && custumerNumber >= 1000 && custumerNumber < 10000)
+            if (int.TryParse(strNumber, out int custumerNumber) && IsCustomerNumberFormat(custumerNumber))
             {
                 //Get the customer
                 Customer customer = GetCustomerByNumber(custumerNumber);
@@ -270,7 +259,7 @@ namespace BankApp
             int customerNum = ReadIntFromKeyboard();
 
             //If a correct customer number has been added
-            if (customerNum > 999 && customerNum < 10000)
+            if (IsCustomerNumberFormat(customerNum))
             {
                 RemoveCustomer(customerNum);
             }
@@ -281,6 +270,12 @@ namespace BankApp
 
 
             WaitForKey();
+        }
+
+        //Returns true if number is of customer number format
+        private bool IsCustomerNumberFormat(int number)
+        {
+            return number > 999 && number < 10000;
         }
 
         private void AccountRemoveMenu()
@@ -346,7 +341,7 @@ namespace BankApp
         }
 
         //Print information about customer based on the customer number
-        private void CustomerInfoSearch(int customerNumber)
+        private void CustomerInfo(int customerNumber)
         {
             //Get info based on owners customer number
             Customer customer = GetCustomerByNumber(customerNumber);
@@ -593,10 +588,10 @@ namespace BankApp
                     Console.WriteLine("\nKunde inte ta bort konto {0}, kontots saldo är ej 0.", accountNumber);
                 }
             }
-            else
+            /*else
             {
                 Console.WriteLine("\nKonto {0} existerar inte.", accountNumber);
-            }
+            }*/
 
         }
 
