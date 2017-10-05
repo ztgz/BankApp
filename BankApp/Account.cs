@@ -51,7 +51,7 @@ namespace BankApp
             //Cannot withdraw, balance would be to low
             if (Balance - amount < 0 - _creditLimit)
             {
-                Console.WriteLine("\nFinns ej tillräckligt med pengar på kontot för att ta ut {0} kr.", amount);
+                Console.WriteLine("\nFinns ej tillräckligt med pengar på konto {0} för begärd överföring ({1} kr).", AccountNumber, amount);
                 return 0.0m;
             }
 

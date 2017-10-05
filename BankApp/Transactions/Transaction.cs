@@ -17,9 +17,9 @@ namespace BankApp.Transactions
 
         protected decimal _recivingAccountBalance;
 
-        protected int _givingAccount;
+        protected int _sendingAccount;
 
-        protected decimal _givingAccountBalance;
+        protected decimal _sendingAccountBalance;
 
         protected decimal _amount;
 
@@ -36,8 +36,8 @@ namespace BankApp.Transactions
                 writer.Write(";" + _recivingAccount);
                 writer.Write(";" + _recivingAccountBalance);
 
-                writer.Write(";" + _givingAccount);
-                writer.Write(";" + _givingAccountBalance);
+                writer.Write(";" + _sendingAccount);
+                writer.Write(";" + _sendingAccountBalance);
 
                 writer.WriteLine();
             }

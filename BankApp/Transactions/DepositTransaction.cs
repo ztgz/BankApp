@@ -16,8 +16,8 @@ namespace BankApp.Transactions
             _recivingAccount = account;
             _recivingAccountBalance = accountBalance;
 
-            _givingAccount = noAccount;
-            _givingAccountBalance = 0;
+            _sendingAccount = noAccount;
+            _sendingAccountBalance = 0;
 
             SaveTransaction();
         }

@@ -28,5 +28,13 @@ namespace BankApp
             dailyTransactions.Add(transaction);
         }
 
+        public void Transfer(decimal amount, int recivingAccount, decimal recivingAccountBalance,
+            int sendingAccount, decimal sendingAccountBalance)
+        {
+            Transaction transaction = new TransferTransaction(amount, recivingAccount, recivingAccountBalance,
+                sendingAccount, sendingAccountBalance);
+            dailyTransactions.Add(transaction);
+        }
+
     }
 }

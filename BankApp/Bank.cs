@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -378,8 +379,66 @@ namespace BankApp
         private void TransferMoneyMenu()
         {
             Console.Clear();
-            Console.WriteLine("Transfer money");
+            Console.WriteLine("* Överföring mellan konton *");
 
+            //User need to specify from which account
+            Console.WriteLine("Flytta pengar från konto, ange konto: ");
+            int fromAccountNumber = ReadIntFromKeyboard();
+
+            //check if it's a valid account number
+            if (IsAccountNumberValid(fromAccountNumber))
+            {
+                Console.WriteLine("Flytta pengar till konto, ange konto: ");
+                int toAccountNumber = ReadIntFromKeyboard();
+
+                //if the account is valid
+                if (IsAccountNumberValid(toAccountNumber))
+                {
+                    Console.WriteLine("Vilken summa vill du överföra från konto {0} till konto {1}", fromAccountNumber, toAccountNumber);
+                    decimal amount = ReadDecimalFromKeyboard();
+
+                    TransferBetweenAccounts(fromAccountNumber, toAccountNumber, amount);
+                }
+            }
+
+
+            WaitForKey();
+        }
+
+        private void TransferBetweenAccounts(int fromAccount, int toAccount, decimal amount)
+        {
+            //Control that it's different accounts
+            if (fromAccount == toAccount)
+            {
+                Console.WriteLine("\nDu måste ange olika kontonummer");
+                return;
+            }
+
+            //Get accounts
+            Account accountSender = GetAccountByNumber(fromAccount);
+            Account accountReciving = GetAccountByNumber(toAccount);
+            
+            //Control that sending and reciving account exist
+            if (accountSender == null || accountReciving == null)
+            {
+                if(accountSender == null)
+                    Console.WriteLine("\nKonto {0} finns inte.", fromAccount);
+                if (accountReciving == null)
+                    Console.WriteLine("\nKonto {0} finns inte.", toAccount);
+                return;
+            }
+
+
+            decimal money = accountSender.WithdrawRequest(amount);
+
+            if (money > 0)
+            {
+                accountReciving.Deposit(money);
+
+                //create transaction journal
+                journal.Transfer(money, accountReciving.AccountNumber, accountReciving.Balance,
+                    accountSender.AccountNumber, accountSender.Balance);
+            }
         }
 
         //Returns true if number is of customer number format
