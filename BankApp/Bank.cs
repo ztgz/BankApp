@@ -12,6 +12,8 @@ namespace BankApp
 
         private List<Account> _accounts = new List<Account>();
 
+        private Journal journal; //Keeps track of all transactions that happend
+
         public Bank()
         {
             Customer cust = new Customer(1005, "559268-7528", "Berglunds snabbköp", "Berguvsvägen  8",
@@ -41,6 +43,8 @@ namespace BankApp
             _accounts.Add(account);
             account = new Account(13130, 1032, 0.00m);
             _accounts.Add(account);*/
+
+            journal = new Journal();
         }
 
         //The main loop of the bank app
@@ -313,9 +317,13 @@ namespace BankApp
                 //Get the amount to deposit
                 Console.WriteLine("Insättningsbelopp?");
                 decimal amount = ReadDecimalFromKeyboard();
+                
 
                 if (account.Deposit(amount))
                 {
+                    //Log the transaction
+                    journal.Deposit(account.AccountNumber, amount, account.Balance);
+
                     Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades.", amount, accountNumber);
                 }
                 else
