@@ -8,34 +8,38 @@ namespace BankApp
 {
     class Bank
     {
-        private List<Customer> customers = new List<Customer>();
+        private List<Customer> _customers = new List<Customer>();
 
-        private List<Account> accounts = new List<Account>();
+        private List<Account> _accounts = new List<Account>();
 
         public Bank()
         {
             Customer cust = new Customer(1005, "559268-7528", "Berglunds snabbköp", "Berguvsvägen  8",
                 "Luleå", "", "S-958 22", "Sweden", "0921-12 34 65");
-            customers.Add(cust);
+            _customers.Add(cust);
 
             cust = new Customer(1024, "556392-8406", "Folk och fä HB", "Åkergatan 24",
                 "Bräcke", "", "S-844 67", "Sweden", "0695-34 67 21");
-            customers.Add(cust);
+            _customers.Add(cust);
 
             cust = new Customer(1032, "551553-1910", "Great Lakes Food Market", "2732 Baker Blvd.",
                 "Eugene", "OR", "97403", "USA", "(503) 555-7555");
-            customers.Add(cust);
-
+            _customers.Add(cust);
+            
             Account account = new Account(13019, 1005, 1488.80m);
-            accounts.Add(account);
+            _accounts.Add(account);
             account = new Account(13020, 1005, 613.20m);
-            accounts.Add(account);
+            _accounts.Add(account);
             account = new Account(13093, 1024, 695.62m);
-            accounts.Add(account);
-            account = new Account(13128, 1032, 392.20m);
-            accounts.Add(account);
-            account = new Account(13030, 1032, 4807.00m);
-            accounts.Add(account);
+            _accounts.Add(account);
+            /*account = new Account(13128, 1032, 392.20m);
+            _accounts.Add(account);
+            account = new Account(13130, 1032, 4807.00m);
+            _accounts.Add(account);*/
+            account = new Account(13128, 1032, 0m);
+            _accounts.Add(account);
+            account = new Account(13130, 1032, 0.00m);
+            _accounts.Add(account);
         }
 
         //The main loop of the bank app
@@ -68,9 +72,17 @@ namespace BankApp
                         //Create new customer
                         CustomerCreateMenu();
                         break;
+                    case 4:
+                        //Remove customer
+                        CustomerRemoveMenu();
+                        break;
                     case 5:
                         //Create a new account menu
-                        NewAccountMenu();
+                        AccountCreateMenu();
+                        break;
+                    case 6:
+                        //Create a new account menu
+                        AccountRemoveMenu();
                         break;
                     case 0:
                         exitApp = true;
@@ -87,7 +99,9 @@ namespace BankApp
             Console.WriteLine("1) Sök kund");
             Console.WriteLine("2) Visa kundbild");
             Console.WriteLine("3) Skapa kund");
+            Console.WriteLine("4) Ta bort kund");
             Console.WriteLine("5) Lägg till konto");
+            Console.WriteLine("6) Ta bort konto");
             Console.WriteLine();
         }
 
@@ -168,7 +182,7 @@ namespace BankApp
             WaitForKey();
         }
 
-        private void NewAccountMenu()
+        private void AccountCreateMenu()
         {
             Console.Clear();
 
@@ -238,6 +252,51 @@ namespace BankApp
 
             WaitForKey();
             
+        }
+
+        private void CustomerRemoveMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Ta bort kund *");
+            
+            //Get info on which client to remove
+            Console.WriteLine("Ange kundnummer");
+            int customerNum = ReadIntFromKeyboard();
+
+            //If a correct customer number has been added
+            if (customerNum > 999 && customerNum < 10000)
+            {
+                RemoveCustomer(customerNum);
+            }
+            else
+            {
+                Console.WriteLine("\nEtt korrekt kundnummer angavs ej, kundnummer består av fyra stycken siffror (xxxx)");
+            }
+
+
+            WaitForKey();
+        }
+
+        private void AccountRemoveMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Ta bort konto *");
+
+            //Get info on which account to remove
+            Console.WriteLine("Ange kontonummer");
+            int accountNum = ReadIntFromKeyboard();
+
+            //If a correct customer number has been added
+            if (accountNum > 9999 && accountNum < 100_000)
+            {
+                RemoveAccount(accountNum);
+            }
+            else
+            {
+                Console.WriteLine("\nEtt korrekt kundnummer angavs ej, kundnummer består av fem stycken siffror (xxxxx)");
+            }
+
+            WaitForKey();
         }
 
         //Print information about customer based on the customer number
@@ -320,7 +379,7 @@ namespace BankApp
             OrderAccounts();
 
             //Get the number of the last account if there are any accounts, otherwise put last to 9999
-            int lastAccountNumber = accounts.Count > 0 ? accounts.LastOrDefault().AccountNumber : 9999;
+            int lastAccountNumber = _accounts.Count > 0 ? _accounts.LastOrDefault().AccountNumber : 9999;
 
             //If the last account number has been reached, look for free spaces in list
             if (lastAccountNumber >= 99999)
@@ -331,7 +390,7 @@ namespace BankApp
                 for (int i = 0; i+addToNumber < 100_000; i++)
                 {
                     //there is a free spot, store the number before the free spot
-                    if (accounts[i].AccountNumber != i+addToNumber)
+                    if (_accounts[i].AccountNumber != i+addToNumber)
                     {
                         lastAccountNumber = i+addToNumber-1;
                         break;
@@ -363,7 +422,7 @@ namespace BankApp
             OrderCustomers();
 
             //Find a free customer number, if no customers set last account to 999, to make new account to 1000
-            int lastCustomerNumber = customers.Count > 0 ? customers.LastOrDefault().CustomerNumber : 999;
+            int lastCustomerNumber = _customers.Count > 0 ? _customers.LastOrDefault().CustomerNumber : 999;
 
             //If the last customer number has been reached, look for free spaces in list
             if (lastCustomerNumber >= 9999)
@@ -374,7 +433,7 @@ namespace BankApp
                 for (int i = 0; i + addToNumber < 100_00; i++)
                 {
                     //there is a free spot, store the number before the free spot
-                    if (customers[i].CustomerNumber != i + addToNumber)
+                    if (_customers[i].CustomerNumber != i + addToNumber)
                     {
                         lastCustomerNumber = i + addToNumber - 1;
                         break;
@@ -407,15 +466,77 @@ namespace BankApp
         //Add account to list of accounts
         private void AddAccount(int accountNumber, int ownersCustomerNumber, decimal balance)
         {
-            accounts.Add(new Account(accountNumber, ownersCustomerNumber, balance));
+            _accounts.Add(new Account(accountNumber, ownersCustomerNumber, balance));
         }
         
         //Add customer to the list of customers
         private void AddCustomer(int customerNumber, string organisationNumber, string name, string adress,
             string city, string region, string postNumber, string country, string phoneNumber)
         {
-            customers.Add(new Customer(customerNumber, organisationNumber, name, adress, city,
+            _customers.Add(new Customer(customerNumber, organisationNumber, name, adress, city,
                 region, postNumber, country, phoneNumber));
+        }
+
+        //Try to remove a specific customer
+        private void RemoveCustomer(int customerNr)
+        {
+            //First see if the customer exist
+            Customer customer = GetCustomerByNumber(customerNr);
+
+            if (customer == null)
+            {
+                Console.WriteLine("Kunde inte hitta angiven kund");
+            }
+
+            //Check that all the accounts of the customer have a zero balance
+            List<Account> customerAccounts = AccountsByOwnerNumber(customerNr);
+
+            //Check if it's possible to remove all customer accounts
+            foreach (var account in customerAccounts)
+            {
+                if (account.Balance != 0)
+                {
+                    Console.WriteLine("\nKundens konton har inte 0 i saldo. Kan ej ta bort kund.");
+                    return;
+                }
+            }
+
+            //It's okay to reomve customer and all its accounts
+            foreach (var account in customerAccounts)
+            {
+                RemoveAccount(account.AccountNumber);
+            }
+
+            _customers = _customers.Where(c => c.CustomerNumber != customerNr).ToList();
+
+            Console.WriteLine("\nKund {0} har raderats", customerNr);
+        }
+
+        //Try to remove a specific account
+        private void RemoveAccount(int accountNumber)
+        {
+            //If account exsits
+            if (AccountExist(accountNumber))
+            {
+                int numberOfAccounts = _accounts.Count;
+
+                //Keep all accounts except if it has the specified account number and zero balance
+                _accounts = _accounts.Where(a => a.AccountNumber != accountNumber || a.Balance != 0).ToList();
+
+                if (numberOfAccounts > _accounts.Count)
+                {
+                    Console.WriteLine("\nKonto {0} raderades.", accountNumber);
+                }
+                else
+                {
+                    Console.WriteLine("\nKunde inte ta bort konto {0}, kontots saldo är ej 0.", accountNumber);
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nKonto {0} existerar inte.", accountNumber);
+            }
+
         }
 
         //Filter the customer list based on if name or city contains the string
@@ -425,7 +546,7 @@ namespace BankApp
             customerInfo = customerInfo.ToLower();
 
             //Filter on name and city (The search is lowercase)
-            var filtredCustomers = customers.Where(c => c.Name.ToLower().Contains(customerInfo) ||
+            var filtredCustomers = _customers.Where(c => c.Name.ToLower().Contains(customerInfo) ||
                                                         c.City.ToLower().Contains(customerInfo));
 
             //Return the filtred customers as a list
@@ -436,34 +557,46 @@ namespace BankApp
         private List<Account> AccountsByOwnerNumber(int number)
         {
             //search for the accounts based on criteria
-            var filtredAccounts = accounts.Where(a => a.OwnersCustomerNumber == number).OrderBy(a => a.AccountNumber);
+            var filtredAccounts = _accounts.Where(a => a.OwnersCustomerNumber == number).OrderBy(a => a.AccountNumber);
             return filtredAccounts.ToList();
         }
 
         //Get customer from customers based on customer number
         private Customer GetCustomerByNumber(int number)
         {
-            Customer customer = customers.SingleOrDefault(c => c.CustomerNumber == number);
+            Customer customer = _customers.SingleOrDefault(c => c.CustomerNumber == number);
             return customer;
         }
 
         //Order customers by customer number
         private void OrderCustomers()
         {
-            customers = customers.OrderBy(c => c.CustomerNumber).ToList();
+            _customers = _customers.OrderBy(c => c.CustomerNumber).ToList();
         }
 
         //Order accounts by account number
         private void OrderAccounts()
         {
-            accounts = accounts.OrderBy(a => a.AccountNumber).ToList();
+            _accounts = _accounts.OrderBy(a => a.AccountNumber).ToList();
         }
 
         //Get the owner of an account
         private int? GetOwnerOfAccount(int accountNumber)
         {
-            Account account = accounts.SingleOrDefault(a => a.AccountNumber == accountNumber);
+            Account account = _accounts.SingleOrDefault(a => a.AccountNumber == accountNumber);
             return account?.OwnersCustomerNumber;
+        }
+
+        //Returns true if an account exsits
+        private bool AccountExist(int accountNumber)
+        {
+            foreach (var account in _accounts)
+            {
+                if (account.AccountNumber == accountNumber)
+                    return true;
+            }
+
+            return false;
         }
     }
 }
