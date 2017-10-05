@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankApp
 {
-    class Account
+    public class Account
     {
         public int AccountNumber { get; private set; }
         
@@ -20,13 +20,13 @@ namespace BankApp
 
         private decimal _creditLimit;
 
-        private decimal _debtLimit;
-
         public Account(int accountNumber, int ownersCustomerNumber, decimal balance)
         {
             AccountNumber = accountNumber;
             OwnersCustomerNumber = ownersCustomerNumber;
             Balance = balance;
+
+            _creditLimit = 0;
         }
 
         public bool Deposit(decimal amount)
@@ -37,6 +37,21 @@ namespace BankApp
 
             Balance += amount;
             return true;
+        }
+
+        public decimal WithdrawRequest(decimal amount)
+        {
+            //No positive amounts cannot be withdrawn from account
+            if (amount <= 0.0m)
+                return 0.0m;
+
+            //Cannot withdraw, balance would be to low
+            if (Balance - amount < 0 - _creditLimit)
+                return 0.0m;
+
+            //It's possible to withdraw the amount
+            Balance -= amount;
+            return amount;
         }
     }
 }
