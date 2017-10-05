@@ -32,14 +32,15 @@ namespace BankApp
             _accounts.Add(account);
             account = new Account(13093, 1024, 695.62m);
             _accounts.Add(account);
-            /*account = new Account(13128, 1032, 392.20m);
+            account = new Account(13128, 1032, 392.20m);
             _accounts.Add(account);
             account = new Account(13130, 1032, 4807.00m);
-            _accounts.Add(account);*/
+            _accounts.Add(account);
+            /*
             account = new Account(13128, 1032, 0m);
             _accounts.Add(account);
             account = new Account(13130, 1032, 0.00m);
-            _accounts.Add(account);
+            _accounts.Add(account);*/
         }
 
         //The main loop of the bank app
@@ -84,6 +85,10 @@ namespace BankApp
                         //Create a new account menu
                         AccountRemoveMenu();
                         break;
+                    case 8:
+                        //Deposit money to an account
+                        DepositMenu();
+                        break;
                     case 0:
                         exitApp = true;
                         break;
@@ -102,6 +107,7 @@ namespace BankApp
             Console.WriteLine("4) Ta bort kund");
             Console.WriteLine("5) Lägg till konto");
             Console.WriteLine("6) Ta bort konto");
+            Console.WriteLine("8) Insättning på konto");
             Console.WriteLine();
         }
 
@@ -286,17 +292,57 @@ namespace BankApp
             Console.WriteLine("Ange kontonummer");
             int accountNum = ReadIntFromKeyboard();
 
-            //If a correct customer number has been added
-            if (accountNum > 9999 && accountNum < 100_000)
+            //If a correct customer number has been added, try to remove account
+            if (IsAccountNumberValid(accountNum))
             {
                 RemoveAccount(accountNum);
             }
-            else
+
+            WaitForKey();
+        }
+
+        private void DepositMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Insättring *");
+
+            Console.WriteLine("Sätt in pengar till konto?");
+            int accountNumber = ReadIntFromKeyboard();
+
+            //check if account number is valid && Exsits
+            if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
             {
-                Console.WriteLine("\nEtt korrekt kundnummer angavs ej, kundnummer består av fem stycken siffror (xxxxx)");
+                //Get the account
+                Account account = GetAccountByNumber(accountNumber);
+
+                //Get the amount to deposit
+                Console.WriteLine("Insättningsbelopp?");
+                decimal amount = ReadDecimalFromKeyboard();
+
+                if (account.Deposit(amount))
+                {
+                    Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades.", amount, accountNumber);
+                }
+                else
+                {
+                    Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
+                }
+                
             }
 
             WaitForKey();
+
+        }
+
+        public bool IsAccountNumberValid(int accountNumber)
+        {
+            if (accountNumber > 9999 && accountNumber < 100_000)
+            {
+                return true;
+            }
+
+            Console.WriteLine("\nEtt korrekt kontonummer angavs ej, kontonummer består av fem stycken siffror (xxxxx)");
+            return false;
         }
 
         //Print information about customer based on the customer number
@@ -348,6 +394,21 @@ namespace BankApp
             } while (!int.TryParse(input, out number));
 
             return number;
+        }
+
+        //Force the user to input a decimalnumber
+        private decimal ReadDecimalFromKeyboard()
+        {
+
+            do
+            {
+                Console.Write("> ");
+                string ammountStr = Console.ReadLine();
+
+                if (decimal.TryParse(ammountStr, out decimal amount))
+                    return amount;
+
+            } while (true);
         }
 
         //Infomessage and wait for a keypress to continue
@@ -568,6 +629,12 @@ namespace BankApp
             return customer;
         }
 
+        //Get specific account based on accountnumber
+        private Account GetAccountByNumber(int number)
+        {
+            return _accounts.SingleOrDefault(a => a.AccountNumber == number);
+        }
+
         //Order customers by customer number
         private void OrderCustomers()
         {
@@ -595,7 +662,7 @@ namespace BankApp
                 if (account.AccountNumber == accountNumber)
                     return true;
             }
-
+            Console.WriteLine("\nKonto {0} existerar inte.", accountNumber);
             return false;
         }
     }

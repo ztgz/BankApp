@@ -28,5 +28,15 @@ namespace BankApp
             OwnersCustomerNumber = ownersCustomerNumber;
             Balance = balance;
         }
+
+        public bool Deposit(decimal amount)
+        {
+            //Cannot deposit a nonpositive number
+            if (amount <= 0)
+                return false;
+
+            Balance += amount;
+            return true;
+        }
     }
 }
