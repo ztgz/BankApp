@@ -838,11 +838,7 @@ namespace BankApp
             return customer;
         }*/
 
-        //Get specific account based on accountnumber
-        private Account GetAccountByNumber(int number)
-        {
-            return _accounts.SingleOrDefault(a => a.AccountNumber == number);
-        }
+       
         
         //Order customers by customer number
         private void OrderCustomers()
@@ -960,7 +956,7 @@ namespace BankApp
         public void AccountSetCredit(int accountNumber, decimal creditLimit, decimal debtInterest)
         {
             //Get account
-            Account account = GetAccountByNumber(accountNumber);
+            Account account = GetAccount(accountNumber);
 
             if (account != null)
             {
@@ -988,7 +984,7 @@ namespace BankApp
             }
             else
             {
-                GetAccountByAccountNumber(accountNumber).SetSavingInterest(interest);
+                GetAccount(accountNumber).SetSavingInterest(interest);
             }
         }
 
@@ -1054,7 +1050,7 @@ namespace BankApp
                 }
 
                 //Set searchnumber to the account owners customer number
-                searchNumber = GetAccountByAccountNumber(searchNumber).OwnersCustomerNumber;
+                searchNumber = GetAccount(searchNumber).OwnersCustomerNumber;
             }
             //If it's neither account or customer number
             else if (!searchNumber.ValidCustomerNumber())
@@ -1167,7 +1163,7 @@ namespace BankApp
             }
 
             //Try to deposit, if succesfull - returns an transaction
-            Transaction transaction = GetAccountByNumber(accountNumber).Deposit(amount);
+            Transaction transaction = GetAccount(accountNumber).Deposit(amount);
 
             if (transaction != null)
             {
@@ -1235,8 +1231,8 @@ namespace BankApp
             }
 
             //Get accounts
-            Account senderAcc = GetAccountByNumber(fromAccountNumber);
-            Account recivingAcc = GetAccountByNumber(toAccountNumber);
+            Account senderAcc = GetAccount(fromAccountNumber);
+            Account recivingAcc = GetAccount(toAccountNumber);
 
             //Control that sending and reciving account exist
             if (senderAcc == null || recivingAcc == null)
@@ -1284,7 +1280,7 @@ namespace BankApp
             }
 
             //Try to withdraw, if succesfull - returns an transaction
-            Account account = GetAccountByNumber(accountNumber);
+            Account account = GetAccount(accountNumber);
             Transaction transaction = account.Withdraw(amount);
 
             if (transaction != null)
@@ -1322,10 +1318,16 @@ namespace BankApp
         }
 
         //Get specific account based on accountnumber
-        private Account GetAccountByAccountNumber(int accountNumber)
+        private Account GetAccount(int accountNumber)
         {
             return _accounts.SingleOrDefault(a => a.AccountNumber == accountNumber);
         }
+
+        //Get specific account based on accountnumber (tror den inte behövs)
+        //private Account GetAccountByNumber(int number)
+        //{
+        //    return _accounts.SingleOrDefault(a => a.AccountNumber == number);
+        //}
 
         //Filter the accounts list by owner
         private List<Account> GetAccountsByCustomerNumber(int customerNumber)

@@ -61,14 +61,13 @@ namespace BankApp
         {
             if (limit < 0)
             {
-                Console.WriteLine("Kreditgräns måste anges som en icke-negativ siffra.");
+                Console.WriteLine("\nKreditgräns måste anges som en icke-negativ siffra.");
             }
             else
             {
                 CreditLimit = limit;
-                Console.WriteLine("Konto {0} har nu en kreditgräns på {1} kr.", AccountNumber, CreditLimit);
+                Console.WriteLine("\nKonto {0} har nu en kreditgräns på {1} kr.", AccountNumber, CreditLimit);
             }
-
         }
 
         public DepositTransaction Deposit(decimal amount)
@@ -116,7 +115,7 @@ namespace BankApp
             return new WithdrawalTransaction(DateTime.Now, AccountNumber, amount, Balance);
         }
 
-        public Transaction AddDailyInterest()
+        public InterestTransaction AddDailyInterest()
         {
             //Calculate the interest
             //If debt
