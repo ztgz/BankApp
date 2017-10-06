@@ -102,10 +102,20 @@ namespace BankApp
                         //Withdraw money from an account
                         TransferMoneyMenu();
                         break;
+                    case 10:
+                        //The daliy transactions for all accounts
+                        DailyTransactionMenu();
+                        break;
+                    case 11:
+                        //All transactions for an account
+                        AccountTransactionMenu();
                     case 0:
                         exitApp = true;
                         break;
                 }
+
+                //Holds the menu so it dosen't restart
+                WaitForKey();
 
             } while (!exitApp);
         }
@@ -123,6 +133,8 @@ namespace BankApp
             Console.WriteLine("7) Insättning på konto");
             Console.WriteLine("8) Uttag från konto");
             Console.WriteLine("9) Överföring mellan konton");
+            Console.WriteLine("10) Daglig transaktions historik");
+            Console.WriteLine("11) Visa transaktioner för konto");
             Console.WriteLine();
         }
 
@@ -144,8 +156,6 @@ namespace BankApp
             {
                 Console.WriteLine(" {0} | {1}", filtredCustomer.CustomerNumber, filtredCustomer.Name);
             }
-
-            WaitForKey();
         }
 
         private void CustomerInfoMenu()
@@ -188,8 +198,6 @@ namespace BankApp
 
             //Search for customer information
             CustomerInfo(searchNumber);
-
-            WaitForKey();
         }
 
         private void AccountCreateMenu()
@@ -222,8 +230,6 @@ namespace BankApp
             {
                 Console.WriteLine("\nKontonummer måste anges med ett 4-siffrigt nummber (t.ex. 1201)");
             }
-
-            WaitForKey();
         }
 
         private void CustomerCreateMenu()
@@ -259,9 +265,6 @@ namespace BankApp
 
             //Create the customer
             CreateCustomer(orgNumber, name, adress, city, region, postNumber, country, phone);
-
-            WaitForKey();
-            
         }
 
         private void CustomerRemoveMenu()
@@ -283,8 +286,6 @@ namespace BankApp
                 Console.WriteLine("\nEtt korrekt kundnummer angavs ej, kundnummer består av fyra stycken siffror (xxxx)");
             }
 
-
-            WaitForKey();
         }
 
         private void AccountRemoveMenu()
@@ -301,14 +302,12 @@ namespace BankApp
             {
                 RemoveAccount(accountNum);
             }
-
-            WaitForKey();
         }
 
         private void DepositMenu()
         {
             Console.Clear();
-            Console.WriteLine("* Insättring *");
+            Console.WriteLine("* Insättning *");
 
             Console.WriteLine("Sätt in pengar till konto, ange konto:");
             int accountNumber = ReadIntFromKeyboard();
@@ -338,8 +337,6 @@ namespace BankApp
                 
             }
 
-            WaitForKey();
-
         }
 
         private void WithdrawalMenu()
@@ -347,7 +344,7 @@ namespace BankApp
             Console.Clear();
             Console.WriteLine("* Uttag *");
 
-            Console.WriteLine("Sätt in pengar till konto, ange konto:");
+            Console.WriteLine("Ta ut pengar ifrån konto, ange konto:");
             int accountNumber = ReadIntFromKeyboard();
 
             //check if account number is valid && Exsits
@@ -372,8 +369,6 @@ namespace BankApp
                     Console.WriteLine("\nEtt uttag på {0} kr från konto {1} genomfördes.", recivedAmmount, accountNumber);
                 }
             }
-
-            WaitForKey();
         }
 
         private void TransferMoneyMenu()
@@ -400,9 +395,15 @@ namespace BankApp
                     TransferBetweenAccounts(fromAccountNumber, toAccountNumber, amount);
                 }
             }
+        }
 
+        private void DailyTransactionMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Transaktionshistorik *\n");
 
-            WaitForKey();
+            journal.PrintDailyTransactions();
+
         }
 
         private void TransferBetweenAccounts(int fromAccount, int toAccount, decimal amount)
@@ -428,7 +429,6 @@ namespace BankApp
                 return;
             }
 
-
             decimal money = accountSender.WithdrawRequest(amount);
 
             if (money > 0)
@@ -438,6 +438,8 @@ namespace BankApp
                 //create transaction journal
                 journal.Transfer(money, accountReciving.AccountNumber, accountReciving.Balance,
                     accountSender.AccountNumber, accountSender.Balance);
+
+                Console.WriteLine("\nÖverföring lyckades.");
             }
         }
 

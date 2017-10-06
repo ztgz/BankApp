@@ -22,5 +22,19 @@ namespace BankApp.Transactions
 
             SaveTransaction();
         }
+
+        public override string GetInfo()
+        {
+            string text = "";
+
+            text += "Datum: " + _date.ToString("yyyyMMdd-HHmm");
+            text += " | Summa:" + _amount;
+            text += " | Från konto: " + _sendingAccount;
+            text += " , Saldo: " + _sendingAccountBalance;
+            text += " | Till konto: " + _recivingAccount;
+            text += " , Saldo: " + _recivingAccountBalance;
+
+            return text;
+        }
     }
 }

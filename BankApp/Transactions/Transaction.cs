@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BankApp.Transactions
 {
-    class Transaction
+    abstract class Transaction
     {
         private const string filePath = @"files\transactionLogg.txt";
 
@@ -42,6 +42,13 @@ namespace BankApp.Transactions
                 writer.WriteLine();
             }
         }
+
+        public DateTime GetDate()
+        {
+            return _date;
+        }
+
+        public abstract string GetInfo();
 
     }
 }

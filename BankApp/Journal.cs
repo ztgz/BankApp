@@ -36,5 +36,20 @@ namespace BankApp
             dailyTransactions.Add(transaction);
         }
 
+        public void PrintDailyTransactions()
+        {
+            DateTime date = DateTime.Now;
+            
+            //Filter it incase a new day started
+            dailyTransactions = dailyTransactions.Where(t => t.GetDate().Day == date.Day
+                                                             && t.GetDate().Month == date.Month &&
+                                                             t.GetDate().Year == date.Year).ToList();
+            
+            foreach (var trans in dailyTransactions)
+            {
+                Console.WriteLine(trans.GetInfo());
+            }
+        }
+
     }
 }
