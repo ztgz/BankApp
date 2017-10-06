@@ -79,7 +79,7 @@ namespace BankApp
                         break;
                     case 12:
                         //Set interest-rate for an account
-                        //AccountSetInterestMenu();
+                        AccountSetInterestMenu();
                         break;
                     case 13:
                         //Add daily rent to accounts
@@ -147,6 +147,19 @@ namespace BankApp
             int accountNum = ReadFromKeyboard.GetInt();
 
             bank.AccountRemove(accountNum);
+        }
+
+        private void AccountSetInterestMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Bestäm sparränta *");
+
+            Console.WriteLine("Ändra ränta på konto:");
+            int accountNumber = ReadFromKeyboard.GetInt();
+            Console.WriteLine("Sätt årlig sparränta till:");
+            decimal interest = ReadFromKeyboard.GetDecimal();
+
+            bank.AccountSetSavingInterest(accountNumber, interest);
         }
 
         private void AccountTransactionMenu()

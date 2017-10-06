@@ -42,7 +42,6 @@ namespace BankApp
                 SaveInterest = interest;
                 Console.WriteLine("\nSparräntan är nu {0}% på konto {1}", SaveInterest, AccountNumber);
             }
-
         }
 
         public void SetDebtInterest(decimal interest)

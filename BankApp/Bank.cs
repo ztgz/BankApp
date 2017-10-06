@@ -119,7 +119,7 @@ namespace BankApp
                         break;
                     case 12:
                         //Set interest-rate for an account
-                        AccountSetInterestMenu();
+                        //AccountSetInterestMenu();
                         break;
                     case 13:
                         //Add daily rent to accounts
@@ -442,7 +442,7 @@ namespace BankApp
             }
         }*/
 
-        private void AccountSetInterestMenu()
+        /*private void AccountSetInterestMenu()
         {
             Console.Clear();
             Console.WriteLine("* Bestäm sparränta *");
@@ -459,7 +459,7 @@ namespace BankApp
                 //Change interest
                 account.SetSavingInterest(interest);
             }
-        }
+        }*/
 
         private void AddDaliyInterestMenu()
         {
@@ -956,6 +956,23 @@ namespace BankApp
             }
         }
 
+        //Set saving interest for an account
+        public void AccountSetSavingInterest(int accountNumber, decimal interest)
+        {
+            if (!accountNumber.ValidAccountNumber())
+            {
+                Console.WriteLine("{0} är inte ett korrekt kontonummer.", accountNumber);
+            }
+            else if (!AccountExist(accountNumber))
+            {
+                Console.WriteLine("Konto {0} existerar inte.", accountNumber);
+            }
+            else
+            {
+                GetAccountByAccountNumber(accountNumber).SetSavingInterest(interest);
+            }
+        }
+
         //Create new customer
         public void CustomerCreate(string organisationNumber, string name, string adress,
             string city, string region, string postNumber, string country, string phoneNumber)
@@ -1133,6 +1150,7 @@ namespace BankApp
             journal.PrintDailyTransactions();
         }
 
+        //Print transactions from a specific account
         public void PrintTransactions(int accountNumber)
         {
             if (!accountNumber.ValidAccountNumber())
