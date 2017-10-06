@@ -55,7 +55,7 @@ namespace BankApp
                         break;
                     case 6:
                         //Create a new account menu
-                        //AccountRemoveMenu();
+                        AccountRemoveMenu();
                         break;
                     case 7:
                         //Deposit money to an account
@@ -135,40 +135,18 @@ namespace BankApp
             int customerNumber = ReadFromKeyboard.GetInt();
 
             bank.AccountCreate(customerNumber);
+        }
 
-             /*
-            //If it's a valid customer number
-            if (customerNumber.ValidCustomerNumber())
-            {
-                bank.AccountCreate();
-            }
-            else
-            {
-                Console.WriteLine("\nFelaktigt kontonummer. Kontonummer måste anges med ett 4-siffrigt nummer (t.ex. 1201)");
-            }
+        private void AccountRemoveMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Ta bort konto *");
 
+            //Get info on which account to remove
+            Console.WriteLine("Ange kontonummer:");
+            int accountNum = ReadFromKeyboard.GetInt();
 
-            //If input could be parsed to int and the number is four digits
-            if (int.TryParse(strNumber, out int custumerNumber) && IsCustomerNumberFormat(custumerNumber))
-            {
-                //Get the customer
-                Customer customer = GetCustomerByNumber(custumerNumber);
-
-                //If customer was found create account
-                if (customer != null)
-                {
-                    AccountCreate(customer);
-                }
-                else
-                {
-                    Console.WriteLine("\nCould not find customer.");
-                }
-
-            }
-            else
-            {
-                Console.WriteLine("\nKontonummer måste anges med ett 4-siffrigt nummber (t.ex. 1201)");
-            }*/
+            bank.AccountRemove(accountNum);
         }
 
         private void CustomerSearchMenu()
@@ -244,5 +222,6 @@ namespace BankApp
             bank.CustomerRemove(customerNum);
         }
 
+        
     }
 }

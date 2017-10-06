@@ -32,14 +32,14 @@ namespace BankApp
             cust = new Customer(1032, "551553-1910", "Great Lakes Food Market", "2732 Baker Blvd.",
                 "Eugene", "OR", "97403", "USA", "(503) 555-7555");
             _customers.Add(cust);
-            
+
             //Account account = new Account(13019, 1005, 1488.80m);
             Account account = new Account(13019, 1005, 10000.00m);
             account.SetSavingInterest(2.5m);
             _accounts.Add(account);
             account = new Account(13020, 1005, 613.20m);
             _accounts.Add(account);
-            account = new Account(13093, 1024, 695.62m);
+            account = new Account(13093, 1024, 0m);
             _accounts.Add(account);
             account = new Account(13128, 1032, 392.20m);
             _accounts.Add(account);
@@ -94,7 +94,7 @@ namespace BankApp
                         break;
                     case 6:
                         //Create a new account menu
-                        AccountRemoveMenu();
+                        //AccountRemoveMenu();
                         break;
                     case 7:
                         //Deposit money to an account
@@ -135,7 +135,6 @@ namespace BankApp
 
                 //Holds the menu so it dosen't restart
                 WaitForKey();
-
             } while (!exitApp);
         }
 
@@ -309,7 +308,7 @@ namespace BankApp
             }
         }*/
 
-        private void AccountRemoveMenu()
+        /*private void AccountRemoveMenu()
         {
             Console.Clear();
             Console.WriteLine("* Ta bort konto *");
@@ -323,7 +322,7 @@ namespace BankApp
             {
                 RemoveAccount(accountNum);
             }
-        }
+        }*/
 
         private void DepositMenu()
         {
@@ -342,7 +341,7 @@ namespace BankApp
                 //Get the amount to deposit
                 Console.WriteLine("Insättningsbelopp?");
                 decimal amount = ReadDecimalFromKeyboard();
-                
+
 
                 if (account.Deposit(amount))
                 {
@@ -355,9 +354,7 @@ namespace BankApp
                 {
                     Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
                 }
-                
             }
-
         }
 
         private void WithdrawalMenu()
@@ -387,7 +384,8 @@ namespace BankApp
                     //Log the transaction
                     journal.Withdrawal(account.AccountNumber, recivedAmmount, account.Balance);
 
-                    Console.WriteLine("\nEtt uttag på {0} kr från konto {1} genomfördes.", recivedAmmount, accountNumber);
+                    Console.WriteLine("\nEtt uttag på {0} kr från konto {1} genomfördes.", recivedAmmount,
+                        accountNumber);
                 }
             }
         }
@@ -410,7 +408,8 @@ namespace BankApp
                 //if the account is valid
                 if (IsAccountNumberValid(toAccountNumber))
                 {
-                    Console.WriteLine("Vilken summa vill du överföra från konto {0} till konto {1}", fromAccountNumber, toAccountNumber);
+                    Console.WriteLine("Vilken summa vill du överföra från konto {0} till konto {1}", fromAccountNumber,
+                        toAccountNumber);
                     decimal amount = ReadDecimalFromKeyboard();
 
                     TransferBetweenAccounts(fromAccountNumber, toAccountNumber, amount);
@@ -424,7 +423,6 @@ namespace BankApp
             Console.WriteLine("* Transaktionshistorik *\n");
 
             journal.PrintDailyTransactions();
-
         }
 
         private void AccountTransactionMenu()
@@ -441,7 +439,6 @@ namespace BankApp
             {
                 journal.PrintTransactions(accountNumber);
             }
-
         }
 
         private void AccountSetInterestMenu()
@@ -461,7 +458,6 @@ namespace BankApp
                 //Change interest
                 account.SetSavingInterest(interest);
             }
-
         }
 
         private void AddDaliyInterestMenu()
@@ -520,11 +516,11 @@ namespace BankApp
             //Get accounts
             Account accountSender = GetAccountByNumber(fromAccount);
             Account accountReciving = GetAccountByNumber(toAccount);
-            
+
             //Control that sending and reciving account exist
             if (accountSender == null || accountReciving == null)
             {
-                if(accountSender == null)
+                if (accountSender == null)
                     Console.WriteLine("\nKonto {0} finns inte.", fromAccount);
                 if (accountReciving == null)
                     Console.WriteLine("\nKonto {0} finns inte.", toAccount);
@@ -546,10 +542,10 @@ namespace BankApp
         }
 
         //Returns true if number is of customer number format
-        private bool IsCustomerNumberFormat(int number)
+        /*private bool IsCustomerNumberFormat(int number)
         {
             return number > 999 && number < 10000;
-        }
+        }*/
 
         public bool IsAccountNumberValid(int accountNumber)
         {
@@ -624,7 +620,6 @@ namespace BankApp
         //Force the user to input a decimalnumber
         private decimal ReadDecimalFromKeyboard()
         {
-
             do
             {
                 Console.Write("> ");
@@ -632,7 +627,6 @@ namespace BankApp
 
                 if (decimal.TryParse(ammountStr, out decimal amount))
                     return amount;
-
             } while (true);
         }
 
@@ -642,7 +636,7 @@ namespace BankApp
             Console.WriteLine("\nTryck valfri tanget för att gå tillbaka till meny...");
             Console.ReadKey();
         }
-        
+
         //forces the user to input non-empty string
         /*private string ReadStringFromKeyboard()
         {
@@ -754,7 +748,7 @@ namespace BankApp
         {
             _accounts.Add(new Account(accountNumber, ownersCustomerNumber, balance));
         }*/
-        
+
         //Try to remove a specific customer
         /*private void RemoveCustomer(int customerNr)
         {
@@ -791,7 +785,7 @@ namespace BankApp
         }*/
 
         //Try to remove a specific account
-        private void RemoveAccount(int accountNumber)
+        /*private void RemoveAccount(int accountNumber)
         {
             //If account exsits
             if (AccountExist(accountNumber))
@@ -810,12 +804,8 @@ namespace BankApp
                     Console.WriteLine("\nKunde inte ta bort konto {0}, kontots saldo är ej 0.", accountNumber);
                 }
             }
-            /*else
-            {
-                Console.WriteLine("\nKonto {0} existerar inte.", accountNumber);
-            }*/
 
-        }
+        }*/
 
         //Filter the customer list based on if name or city contains the string
         /*private List<Customer> CustomersByNameOrCity(string customerInfo)
@@ -884,9 +874,6 @@ namespace BankApp
         }*/
 
 
-
-
-        
         //Create new account
         public void AccountCreate(int customerNumber)
         {
@@ -927,6 +914,40 @@ namespace BankApp
 
             //Info that account was created
             Console.WriteLine("\nKonto {0} skapades för kund {1}", newAccountNumber, customerNumber);
+        }
+
+        //Try to remove a specific account
+        public void AccountRemove(int accountNumber)
+        {
+            //If it's not valid account number
+            if (!accountNumber.ValidAccountNumber())
+            {
+                Console.WriteLine("{0} is not an valid account number.", accountNumber);
+                return;
+            }
+
+            //If account exsits
+            if (AccountExist(accountNumber))
+            {
+                int numberOfAccounts = _accounts.Count;
+
+                //Keep all accounts except if it has the specified account number and zero balance
+                _accounts = _accounts.Where(a => a.AccountNumber != accountNumber || a.Balance != 0).ToList();
+
+                if (numberOfAccounts > _accounts.Count)
+                {
+                    Console.WriteLine("\nKonto {0} raderades.", accountNumber);
+                }
+                else
+                {
+                    Console.WriteLine("\nKunde inte ta bort konto {0}, kontots saldo är ej 0.", accountNumber);
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nKonto {0} finns inte.", accountNumber);
+            }
+            
         }
 
         //Create new customer
@@ -1061,7 +1082,7 @@ namespace BankApp
             //It's okay to remove customer and all the accounts
             foreach (var account in customerAccounts)
             {
-                RemoveAccount(account.AccountNumber);
+                AccountRemove(account.AccountNumber);
             }
 
             _customers = _customers.Where(c => c.CustomerNumber != customerNr).ToList();
@@ -1076,8 +1097,8 @@ namespace BankApp
             search = search.ToLower();
 
             //Filter on name and city (The search is lowercase)
-            var filtredCustomers = _customers.Where(c => c.Name.ToLower().Contains(search) 
-                || c.City.ToLower().Contains(search));
+            var filtredCustomers = _customers.Where(c => c.Name.ToLower().Contains(search)
+                                                         || c.City.ToLower().Contains(search));
 
             //Print the filtred list
             Console.WriteLine("\nKundnr| Kund");
@@ -1086,7 +1107,7 @@ namespace BankApp
                 Console.WriteLine(" {0} | {1}", filtredCustomer.CustomerNumber, filtredCustomer.Name);
             }
         }
-        
+
 
         //Check if a specific account
         private bool AccountExist(int accountNumber)
@@ -1118,7 +1139,8 @@ namespace BankApp
         private List<Account> GetAccountsByCustomerNumber(int customerNumber)
         {
             //search for the accounts based on criteria
-            var filtredAccounts = _accounts.Where(a => a.OwnersCustomerNumber == customerNumber).OrderBy(a => a.AccountNumber);
+            var filtredAccounts = _accounts.Where(a => a.OwnersCustomerNumber == customerNumber)
+                .OrderBy(a => a.AccountNumber);
             return filtredAccounts.ToList();
         }
 
