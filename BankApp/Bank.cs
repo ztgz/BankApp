@@ -115,12 +115,16 @@ namespace BankApp
                         AccountTransactionMenu();
                         break;
                     case 12:
-                        //Set interestrate for an account
+                        //Set interest-rate for an account
                         AccountSetInterestMenu();
                         break;
                     case 13:
                         //Add daily rent to accounts
                         AddDaliyInterestMenu();
+                        break;
+                    case 14:
+                        //Set creditlimit and interest for an account
+                        AccountSetCreditMenu();
                         break;
                     case 0:
                         exitApp = true;
@@ -150,6 +154,7 @@ namespace BankApp
             Console.WriteLine("11) Visa transaktioner för konto");
             Console.WriteLine("12) Ange sparränta på konto");
             Console.WriteLine("13) Daglig sparränta");
+            Console.WriteLine("14) Ange kreditgräns och skuldränta på konto");
             Console.WriteLine();
         }
 
@@ -450,9 +455,9 @@ namespace BankApp
 
             if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
             {
-                //Få konot
+                //Get account
                 Account account = GetAccountByNumber(accountNumber);
-                //Ändra ränta
+                //Change interest
                 account.SetSavingInterest(interest);
             }
 
@@ -475,6 +480,31 @@ namespace BankApp
             }
 
             Console.WriteLine("\nDaglig sparränta tillagd på {0} konton.", i);
+        }
+
+        private void AccountSetCreditMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Kreditgräns *");
+
+            Console.WriteLine("Ändra kredit på konto:");
+            int accountNumber = ReadIntFromKeyboard();
+
+            Console.WriteLine("Vilken kreditgräns ska kontot ha:");
+            decimal creditLimt = ReadDecimalFromKeyboard();
+
+            Console.WriteLine("Volken skuldränta ska kontot ha:");
+            decimal debtInterest = ReadDecimalFromKeyboard();
+
+            if (IsAccountNumberValid(accountNumber))
+            {
+                //Get account
+                Account account = GetAccountByNumber(accountNumber);
+                //Change creditlimit
+                account.SetCreditLimit(creditLimt);
+                //Change interest
+                account.SetDebtInterest(debtInterest);
+            }
         }
 
         private void TransferBetweenAccounts(int fromAccount, int toAccount, decimal amount)

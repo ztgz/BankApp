@@ -17,9 +17,9 @@ namespace BankApp
 
         public decimal SaveInterest { get; private set; }
 
-        private decimal _debtInterest;
+        public decimal DebtInterest { get; private set; }
 
-        private decimal _creditLimit;
+        public decimal CreditLimit { get; private set; }
 
         public Account(int accountNumber, int ownersCustomerNumber, decimal balance)
         {
@@ -27,7 +27,7 @@ namespace BankApp
             OwnersCustomerNumber = ownersCustomerNumber;
             Balance = balance;
 
-            _creditLimit = 0;
+            CreditLimit = 0;
         }
 
         public void SetSavingInterest(decimal interest)
@@ -36,11 +36,40 @@ namespace BankApp
             {
                 Console.WriteLine("\nSparräntan måste vara positiv. Ränta {0}% kan inte sättas till konto {1}.",
                     interest, AccountNumber);
-                return;
+            }
+            else
+            {
+                SaveInterest = interest;
+                Console.WriteLine("\nSparräntan är nu {0}% på konto {1}", SaveInterest, AccountNumber);
             }
 
-            SaveInterest = interest;
-            Console.WriteLine("\nSparräntan är nu {0}% på konto {1}", interest, AccountNumber);
+        }
+
+        public void SetDebtInterest(decimal interest)
+        {
+            if (interest < 0)
+            {
+                Console.WriteLine("\nSkuldräntan kan inte vara negativ. Skuldränta {0}% kan inte sättas till konto {1}.",
+                    interest, AccountNumber);
+            }
+            else {
+                DebtInterest = interest;
+                Console.WriteLine("\nSkuldräntan är nu {0}% på konto {1}", DebtInterest, AccountNumber);
+            }
+        }
+
+        public void SetCreditLimit(decimal limit)
+        {
+            if (limit < 0)
+            {
+                Console.WriteLine("Kreditgräns måste anges som en icke-negativ siffra.");
+            }
+            else
+            {
+                CreditLimit = limit;
+                Console.WriteLine("Konto {0} har nu en kreditgräns på {1} kr.", AccountNumber, CreditLimit);
+            }
+
         }
 
         public bool Deposit(decimal amount)
@@ -63,7 +92,7 @@ namespace BankApp
             }
 
             //Cannot withdraw, balance would be to low
-            if (Balance - amount < 0 - _creditLimit)
+            if (Balance - amount < 0 - CreditLimit)
             {
                 Console.WriteLine("\nFinns ej tillräckligt med pengar på konto {0} för begärd överföring ({1} kr).", AccountNumber, amount);
                 return 0.0m;
