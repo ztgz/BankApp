@@ -16,31 +16,44 @@ namespace BankApp
             dailyTransactions = new List<Transaction>();
         }
 
+        public void AddTransaction(Transaction transaction)
+        {
+            dailyTransactions.Add(transaction);
+            transaction.SaveTransaction();
+        }
+
         public void Deposit(int toAccount, decimal amount, decimal accountBalance)
         {
-            Transaction transaction = new DepositTransaction(toAccount, amount, accountBalance);
-            dailyTransactions.Add(transaction);
+            Transaction transaction = new DepositTransaction(DateTime.Now, toAccount, amount, accountBalance);
+            AddTransaction(transaction);
         }
 
         public void Withdrawal(int fromAccount, decimal amount, decimal accountBalance)
         {
-            Transaction transaction = new WithdrawalTransaction(fromAccount, amount, accountBalance);
-            dailyTransactions.Add(transaction);
+            Transaction transaction = new WithdrawalTransaction(DateTime.Now, fromAccount, amount, accountBalance);
+            AddTransaction(transaction);
         }
 
         public void Transfer(decimal amount, int recivingAccount, decimal recivingAccountBalance,
             int sendingAccount, decimal sendingAccountBalance)
         {
-            Transaction transaction = new TransferTransaction(amount, recivingAccount, recivingAccountBalance,
+            Transaction transaction = new TransferTransaction(DateTime.Now, amount, recivingAccount, recivingAccountBalance,
                 sendingAccount, sendingAccountBalance);
-            dailyTransactions.Add(transaction);
+            AddTransaction(transaction);
         }
+        /*
+        public void AddInterest(int toAccount, decimal amount, decimal accountBalance)
+        {
+            Transaction transaction = new SaveInterestTransaction(DateTime.Now, toAccount, amount, accountBalance);
+            transaction.SaveTransaction();
+            dailyTransactions.Add(transaction);
+        }*/
 
         public void PrintDailyTransactions()
         {
             DateTime date = DateTime.Now;
             
-            //Filter it incase a new day started
+            //Filter it incase that the system has been running for more than one day
             dailyTransactions = dailyTransactions.Where(t => t.GetDate().Day == date.Day
                                                              && t.GetDate().Month == date.Month &&
                                                              t.GetDate().Year == date.Year).ToList();
@@ -51,5 +64,20 @@ namespace BankApp
             }
         }
 
+        public void PrintTransactions(int accountNumber)
+        {
+            /* Om bara dagliga transaktioner ska användas
+            var transactions = dailyTransactions.Where(t => t.RecivingAccount == accountNumber || t.SendingAccount == accountNumber);
+            */
+
+            var transactions = Transaction.GetTransactionsHistory()
+                .Where(t => t.RecivingAccount == accountNumber || t.SendingAccount == accountNumber);
+
+            foreach (var transaction in transactions)
+            {
+                Console.WriteLine(transaction.GetInfo());
+            }
+        }
+        
     }
 }

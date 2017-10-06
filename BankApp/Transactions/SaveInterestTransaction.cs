@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BankApp.Transactions
 {
-    class DepositTransaction : Transaction
+    public class SaveInterestTransaction : Transaction
     {
-        public DepositTransaction(DateTime date, int account, decimal amount, decimal accountBalance)
+        public SaveInterestTransaction(DateTime date, int account, decimal amount, decimal accountBalance)
         {
             _date = date;
             _amount = amount;
@@ -16,7 +16,7 @@ namespace BankApp.Transactions
             RecivingAccount = account;
             _recivingAccountBalance = accountBalance;
 
-            SendingAccount = noAccount;
+            SendingAccount = fromBank;
             _sendingAccountBalance = 0;
         }
 
@@ -26,7 +26,7 @@ namespace BankApp.Transactions
 
             text += "Datum: " + _date.ToString("yyyyMMdd-HHmm");
             text += " | Summa:" + _amount;
-            text += " | (Insättning till konto)";
+            text += " | (Sparränta till konto)";
             text += " | Till konto: " + RecivingAccount;
             text += " , Saldo: " + _recivingAccountBalance;
 

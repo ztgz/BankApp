@@ -49,6 +49,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transactions\DepositTransaction.cs" />
+    <Compile Include="Transactions\SaveInterestTransaction.cs" />
     <Compile Include="Transactions\Transaction.cs" />
     <Compile Include="Transactions\TransferTransaction.cs" />
     <Compile Include="Transactions\WithdrawalTransaction.cs" />

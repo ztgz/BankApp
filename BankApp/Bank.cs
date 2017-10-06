@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankApp.Transactions;
 
 namespace BankApp
 {
@@ -29,7 +31,9 @@ namespace BankApp
                 "Eugene", "OR", "97403", "USA", "(503) 555-7555");
             _customers.Add(cust);
             
-            Account account = new Account(13019, 1005, 1488.80m);
+            //Account account = new Account(13019, 1005, 1488.80m);
+            Account account = new Account(13019, 1005, 10000.00m);
+            account.SetSavingInterest(2.5m);
             _accounts.Add(account);
             account = new Account(13020, 1005, 613.20m);
             _accounts.Add(account);
@@ -109,6 +113,15 @@ namespace BankApp
                     case 11:
                         //All transactions for an account
                         AccountTransactionMenu();
+                        break;
+                    case 12:
+                        //Set interestrate for an account
+                        AccountSetInterestMenu();
+                        break;
+                    case 13:
+                        //Add daily rent to accounts
+                        AddDaliyInterestMenu();
+                        break;
                     case 0:
                         exitApp = true;
                         break;
@@ -135,6 +148,8 @@ namespace BankApp
             Console.WriteLine("9) Överföring mellan konton");
             Console.WriteLine("10) Daglig transaktions historik");
             Console.WriteLine("11) Visa transaktioner för konto");
+            Console.WriteLine("12) Ange sparränta på konto");
+            Console.WriteLine("13) Daglig sparränta");
             Console.WriteLine();
         }
 
@@ -406,6 +421,62 @@ namespace BankApp
 
         }
 
+        private void AccountTransactionMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Transaktioner för konto *");
+
+            Console.WriteLine("Se transaktioner för konto, ange konto:");
+            int accountNumber = ReadIntFromKeyboard();
+
+            Console.WriteLine();
+            //check if the accountnumber is valid an exists
+            if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
+            {
+                journal.PrintTransactions(accountNumber);
+            }
+
+        }
+
+        private void AccountSetInterestMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Bestäm sparränta *");
+
+            Console.WriteLine("Ändra ränta på konto:");
+            int accountNumber = ReadIntFromKeyboard();
+            Console.WriteLine("Sätt årlig sparränta till:");
+            decimal interest = ReadDecimalFromKeyboard();
+
+            if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
+            {
+                //Få konot
+                Account account = GetAccountByNumber(accountNumber);
+                //Ändra ränta
+                account.SetSavingInterest(interest);
+            }
+
+        }
+
+        private void AddDaliyInterestMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Daglig sparränta *");
+
+            int i = 0;
+            foreach (var account in _accounts)
+            {
+                Transaction transaction = account.AddDailyInterest();
+                if (transaction != null)
+                {
+                    journal.AddTransaction(transaction);
+                    i++;
+                }
+            }
+
+            Console.WriteLine("\nDaglig sparränta tillagd på {0} konton.", i);
+        }
+
         private void TransferBetweenAccounts(int fromAccount, int toAccount, decimal amount)
         {
             //Control that it's different accounts
@@ -483,7 +554,11 @@ namespace BankApp
                 Console.WriteLine("\nKonton");
                 foreach (var account in filtredAccounts)
                 {
-                    Console.WriteLine("{0}: {1} kr", account.AccountNumber, account.Balance);
+                    Console.Write("{0}: {1} kr", account.AccountNumber, account.Balance);
+                    if(account.SaveInterest > 0)
+                        Console.Write(", sparränta {0}%", account.SaveInterest);
+
+                    Console.WriteLine();
                     sum += account.Balance;
                 }
                 Console.WriteLine("\nTotalt på alla konton: {0} kr.", sum);

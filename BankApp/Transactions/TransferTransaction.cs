@@ -8,19 +8,18 @@ namespace BankApp.Transactions
 {
     class TransferTransaction : Transaction
     {
-        public TransferTransaction(decimal amount, int recivingAccount, decimal recivingAccountBalance,
+        public TransferTransaction(DateTime date, decimal amount, 
+            int recivingAccount, decimal recivingAccountBalance,
             int sendingAccount, decimal sendingAccountBalance)
         {
-            _date = DateTime.Now;
+            _date = date;
             _amount = amount;
 
-            _recivingAccount = recivingAccount;
+            RecivingAccount = recivingAccount;
             _recivingAccountBalance = recivingAccountBalance;
 
-            _sendingAccount = sendingAccount;
+            SendingAccount = sendingAccount;
             _sendingAccountBalance = sendingAccountBalance;
-
-            SaveTransaction();
         }
 
         public override string GetInfo()
@@ -29,9 +28,9 @@ namespace BankApp.Transactions
 
             text += "Datum: " + _date.ToString("yyyyMMdd-HHmm");
             text += " | Summa:" + _amount;
-            text += " | Från konto: " + _sendingAccount;
+            text += " | Från konto: " + SendingAccount;
             text += " , Saldo: " + _sendingAccountBalance;
-            text += " | Till konto: " + _recivingAccount;
+            text += " | Till konto: " + RecivingAccount;
             text += " , Saldo: " + _recivingAccountBalance;
 
             return text;
