@@ -87,7 +87,7 @@ namespace BankApp
                         break;
                     case 14:
                         //Set creditlimit and interest for an account
-                        //AccountSetCreditMenu();
+                        AccountSetCreditMenu();
                         break;
                     case 0:
                         exitApp = true;
@@ -147,6 +147,23 @@ namespace BankApp
             int accountNum = ReadFromKeyboard.GetInt();
 
             bank.AccountRemove(accountNum);
+        }
+
+        private void AccountSetCreditMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Kreditgräns *");
+
+            Console.WriteLine("Ändra kredit på konto:");
+            int accountNumber = ReadFromKeyboard.GetInt();
+
+            Console.WriteLine("Vilken kreditgräns ska kontot ha:");
+            decimal creditLimt = ReadFromKeyboard.GetInt();
+
+            Console.WriteLine("Vilken skuldränta ska kontot ha:");
+            decimal debtInterest = ReadFromKeyboard.GetInt();
+
+            bank.AccountSetCredit(accountNumber, creditLimt, debtInterest);
         }
 
         private void AccountSetInterestMenu()

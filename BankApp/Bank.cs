@@ -127,7 +127,7 @@ namespace BankApp
                         break;
                     case 14:
                         //Set creditlimit and interest for an account
-                        AccountSetCreditMenu();
+                        //AccountSetCreditMenu();
                         break;
                     case 0:
                         exitApp = true;
@@ -481,7 +481,7 @@ namespace BankApp
         }
         */
 
-        private void AccountSetCreditMenu()
+        /*private void AccountSetCreditMenu()
         {
             Console.Clear();
             Console.WriteLine("* Kreditgräns *");
@@ -504,7 +504,7 @@ namespace BankApp
                 //Change interest
                 account.SetDebtInterest(debtInterest);
             }
-        }
+        }*/
 
         /*private void TransferBetweenAccounts(int fromAccount, int toAccount, decimal amount)
         {
@@ -957,6 +957,24 @@ namespace BankApp
             }
         }
 
+        public void AccountSetCredit(int accountNumber, decimal creditLimit, decimal debtInterest)
+        {
+            //Get account
+            Account account = GetAccountByNumber(accountNumber);
+
+            if (account != null)
+            {
+                //Change creditlimit
+                account.SetCreditLimit(creditLimit);
+                //Change interest
+                account.SetDebtInterest(debtInterest);
+            }
+            else
+            {
+                Console.WriteLine("Konto {0} existerar inte.", accountNumber);
+            }
+        }
+
         //Set saving interest for an account
         public void AccountSetSavingInterest(int accountNumber, decimal interest)
         {
@@ -1281,6 +1299,7 @@ namespace BankApp
                 Console.WriteLine("Kan max ta ut {0} kr.", account.MaxPossibleWithdraw());
             }
         }
+
 
         //Check if a specific account
         private bool AccountExist(int accountNumber)
