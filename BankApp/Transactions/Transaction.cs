@@ -81,10 +81,10 @@ namespace BankApp.Transactions
 
                         Transaction transaction;
                         //Test type of transaction
-                        //if it's daily savings interestRate
+                        //if it's daily interestRate
                         if (transInfo[4] == "-1")
                         {
-                            transaction = new SaveInterestTransaction(date, int.Parse(transInfo[2]),
+                            transaction = new InterestTransaction(date, int.Parse(transInfo[2]),
                                 decimal.Parse(transInfo[1]), decimal.Parse(transInfo[3]));
                         }
                         //It's a whitdrawal

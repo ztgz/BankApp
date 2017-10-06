@@ -103,18 +103,41 @@ namespace BankApp
             return amount;
         }
 
-        public SaveInterestTransaction AddDailyInterest()
+        public Transaction AddDailyInterest()
         {
-            if (SaveInterest > 0)
+            //Calculate the interest
+            //If debt
+            if (Balance < 0 && DebtInterest > 0)
             {
-                //Yearly interest to daily interest eg
-                decimal dailyInterest = (decimal)Math.Pow(1 + (double)SaveInterest / 100.0, 1.0 / 365.0)-1;
+                //Yearly interest to daily interest
+                decimal dailyInterest = (decimal)Math.Pow(1 + (double)DebtInterest / 100.0, 1.0 / 365.0) - 1;
+
+                //How much to remove from the account (Balance is negative => amount is negativ)
                 decimal amount = Balance * dailyInterest;
+                //Remove the rent to the account
+                Balance = Balance + amount;
+
+                Console.WriteLine("Skuldränta har tagits ifrån konto {0}.", AccountNumber);
+
+                InterestTransaction transaction = new InterestTransaction(DateTime.Now, AccountNumber, +amount, Balance);
+                return transaction;
+            }
+
+            //If savings
+            if (Balance > 0 && SaveInterest > 0)
+            {
+                //Yearly interest to daily interest
+                decimal dailyInterest = (decimal)Math.Pow(1 + (double)SaveInterest / 100.0, 1.0 / 365.0)-1;
+
+                //How much to add
+                decimal amount = Balance * dailyInterest;
+
                 //Add the rent to the account
-                Balance += amount;
+                Balance = Balance + amount;
+
                 Console.WriteLine("Sparränta har adderats till konto {0}.", AccountNumber);
 
-                SaveInterestTransaction transaction = new SaveInterestTransaction(DateTime.Now, AccountNumber, amount, Balance);
+                InterestTransaction transaction = new InterestTransaction(DateTime.Now, AccountNumber, amount, Balance);
                 return transaction;
             }
 

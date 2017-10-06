@@ -153,7 +153,7 @@ namespace BankApp
             Console.WriteLine("10) Daglig transaktions historik");
             Console.WriteLine("11) Visa transaktioner för konto");
             Console.WriteLine("12) Ange sparränta på konto");
-            Console.WriteLine("13) Daglig sparränta");
+            Console.WriteLine("13) Daglig ränta");
             Console.WriteLine("14) Ange kreditgräns och skuldränta på konto");
             Console.WriteLine();
         }
@@ -466,7 +466,7 @@ namespace BankApp
         private void AddDaliyInterestMenu()
         {
             Console.Clear();
-            Console.WriteLine("* Daglig sparränta *");
+            Console.WriteLine("* Daglig ränta *");
 
             int i = 0;
             foreach (var account in _accounts)
@@ -479,7 +479,7 @@ namespace BankApp
                 }
             }
 
-            Console.WriteLine("\nDaglig sparränta tillagd på {0} konton.", i);
+            Console.WriteLine("\nDaglig ränta utförd på {0} konton.", i);
         }
 
         private void AccountSetCreditMenu()
@@ -587,6 +587,10 @@ namespace BankApp
                     Console.Write("{0}: {1} kr", account.AccountNumber, account.Balance);
                     if(account.SaveInterest > 0)
                         Console.Write(", sparränta {0}%", account.SaveInterest);
+                    if(account.CreditLimit > 0)
+                        Console.Write(", kreditgräns {0} kr", account.CreditLimit);
+                    if(account.DebtInterest > 0)
+                        Console.Write(", skuldränta {0}%", account.DebtInterest);
 
                     Console.WriteLine();
                     sum += account.Balance;
