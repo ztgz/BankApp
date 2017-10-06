@@ -10,11 +10,21 @@ namespace BankApp
     {
         static void Main(string[] args)
         {
+            /*
             //Create the bank
             Bank bank = new Bank();
             
             //Run the bank app
-            bank.Run();
+            bank.Run();*/
+            try
+            {
+                Menu menu = new Menu();
+                menu.StartMenu();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Något gick snett under körning. Programmet avslutas.");
+            }
         }
     }
 }

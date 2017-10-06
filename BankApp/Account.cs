@@ -143,5 +143,18 @@ namespace BankApp
 
             return null;
         }
+
+        public void PrintAccount()
+        {
+            Console.Write("{0}: {1} kr", AccountNumber, Balance);
+            if (SaveInterest > 0)
+                Console.Write(", sparränta {0}%", SaveInterest);
+            if (CreditLimit > 0)
+                Console.Write(", kreditgräns {0} kr", CreditLimit);
+            if (DebtInterest > 0)
+                Console.Write(", skuldränta {0}%", DebtInterest);
+
+            Console.WriteLine();
+        }
     }
 }

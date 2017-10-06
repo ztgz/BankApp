@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankApp
+{
+    static class ReadFromKeyboard
+    {
+        //Forces the user to input a number
+        public static int GetInt()
+        {
+            int number;
+            string input;
+
+            //Run until a valid number has been typed
+            do
+            {
+                Console.Write("> ");
+                input = Console.ReadLine();
+            } while (!int.TryParse(input, out number));
+
+            return number;
+        }
+
+        //Forces the user to input non-empty string
+        public static string GetString()
+        {
+            while (true)
+            {
+                Console.Write("> ");
+                string input = Console.ReadLine();
+
+                if (input != "")
+                    return input;
+
+                Console.WriteLine("Fältet kan inte vara tomt försök igen");
+            }
+        }
+    }
+}

@@ -41,5 +41,14 @@ namespace BankApp
             Country = country;
             PhoneNumber = phoneNumber;
         }
+
+        public void PrintCustomer()
+        {
+            Console.WriteLine("\nOrganistionsnummer: {0}", OrganisationNumber);
+            Console.WriteLine("Namn: {0}", Name);
+            Console.WriteLine("Adress: {0}, {1}, {2}, {3}{4}", Address, PostNumber, City,
+                (Region != "" ? $"{Region}, " : ""), Country);
+            Console.WriteLine("Telefonnummer: {0}", PhoneNumber);
+        }
     }
 }
