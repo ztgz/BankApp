@@ -63,7 +63,7 @@ namespace BankApp
                         break;
                     case 8:
                         //Withdraw money from an account
-                        //WithdrawalMenu();
+                        WithdrawalMenu();
                         break;
                     case 9:
                         //Withdraw money from an account
@@ -149,32 +149,6 @@ namespace BankApp
             bank.AccountRemove(accountNum);
         }
 
-        private void CustomerSearchMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("* Sök kund *");
-
-            //Get search string from keyboard
-            Console.Write("Namn eller postort: \n> ");
-            string customerSearch = Console.ReadLine();
-
-            bank.SearchCustomers(customerSearch);
-        }
-
-        private void CustomerInfoMenu()
-        {
-            Console.Clear();
-
-            //Get input from user
-            Console.WriteLine("* Visa kundbild *");
-            Console.WriteLine("Ange kundnummer eller kontonummer: ");
-
-            int searchNumber = ReadFromKeyboard.GetInt();
-
-            //Search for the customer
-            bank.CustomerInfo(searchNumber);
-        }
-
         private void CustomerCreateMenu()
         {
             Console.Clear();
@@ -210,6 +184,20 @@ namespace BankApp
             bank.CustomerCreate(orgNumber, name, adress, city, region, postNumber, country, phone);
         }
 
+        private void CustomerInfoMenu()
+        {
+            Console.Clear();
+
+            //Get input from user
+            Console.WriteLine("* Visa kundbild *");
+            Console.WriteLine("Ange kundnummer eller kontonummer: ");
+
+            int searchNumber = ReadFromKeyboard.GetInt();
+
+            //Search for the customer
+            bank.CustomerInfo(searchNumber);
+        }
+
         private void CustomerRemoveMenu()
         {
             Console.Clear();
@@ -222,6 +210,18 @@ namespace BankApp
             bank.CustomerRemove(customerNum);
         }
 
+        private void CustomerSearchMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Sök kund *");
+
+            //Get search string from keyboard
+            Console.Write("Namn eller postort: \n> ");
+            string customerSearch = Console.ReadLine();
+
+            bank.SearchCustomers(customerSearch);
+        }
+
         private void DepositMenu()
         {
             Console.Clear();
@@ -231,9 +231,23 @@ namespace BankApp
             int accountNumber = ReadFromKeyboard.GetInt();
 
             Console.WriteLine("Insättningsbelopp:");
-            decimal amount = ReadFromKeyboard.GetInt();
+            decimal amount = ReadFromKeyboard.GetDecimal();
 
             bank.Deposit(accountNumber, amount);
+        }
+
+        private void WithdrawalMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Uttag *");
+
+            Console.WriteLine("Ta ut pengar ifrån konto, ange konto:");
+            int accountNumber = ReadFromKeyboard.GetInt();
+
+            Console.WriteLine("Hur mycket vill du ta ut:");
+            decimal amount = ReadFromKeyboard.GetDecimal();
+
+            bank.Withdraw(accountNumber, amount);
 
             /*
             //check if account number is valid && Exsits
@@ -243,20 +257,20 @@ namespace BankApp
                 Account account = GetAccountByNumber(accountNumber);
 
                 //Get the amount to deposit
-                Console.WriteLine("Insättningsbelopp?");
+                Console.WriteLine("Hur mycket vill du ta ut? (saldo = {0})", account.Balance);
                 decimal amount = ReadDecimalFromKeyboard();
 
+                //How much money that were recived
+                decimal recivedAmmount = account.WithdrawRequest(amount);
 
-                if (account.Deposit(amount))
+                //If withdrawal was accepted
+                if (recivedAmmount > 0)
                 {
                     //Log the transaction
-                    journal.Deposit(account.AccountNumber, amount, account.Balance);
+                    journal.Withdrawal(account.AccountNumber, recivedAmmount, account.Balance);
 
-                    Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades.", amount, accountNumber);
-                }
-                else
-                {
-                    Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
+                    Console.WriteLine("\nEtt uttag på {0} kr från konto {1} genomfördes.", recivedAmmount,
+                        accountNumber);
                 }
             }*/
         }

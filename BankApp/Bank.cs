@@ -35,6 +35,7 @@ namespace BankApp
 
             //Account account = new Account(13019, 1005, 1488.80m);
             Account account = new Account(13019, 1005, 10000.00m);
+            account.SetCreditLimit(5000);
             account.SetSavingInterest(2.5m);
             _accounts.Add(account);
             account = new Account(13020, 1005, 613.20m);
@@ -65,7 +66,7 @@ namespace BankApp
             {
                 Console.Clear();
 
-                PrintMainMenu();
+                //PrintMainMenu();
 
                 //What is choosen in the main menu
                 int choise = ReadIntFromKeyboard();
@@ -102,7 +103,7 @@ namespace BankApp
                         break;
                     case 8:
                         //Withdraw money from an account
-                        WithdrawalMenu();
+                        //WithdrawalMenu();
                         break;
                     case 9:
                         //Withdraw money from an account
@@ -138,7 +139,7 @@ namespace BankApp
             } while (!exitApp);
         }
 
-        private void PrintMainMenu()
+        /*private void PrintMainMenu()
         {
             Console.WriteLine("HUVUDMENY");
             Console.WriteLine("0) Avsluta och spara");
@@ -157,7 +158,7 @@ namespace BankApp
             Console.WriteLine("13) Daglig ränta");
             Console.WriteLine("14) Ange kreditgräns och skuldränta på konto");
             Console.WriteLine();
-        }
+        }*/
 
         /*private void CustomerSearchMenu()
         {
@@ -357,7 +358,7 @@ namespace BankApp
             }
         }*/
 
-        private void WithdrawalMenu()
+       /* private void WithdrawalMenu()
         {
             Console.Clear();
             Console.WriteLine("* Uttag *");
@@ -388,7 +389,7 @@ namespace BankApp
                         accountNumber);
                 }
             }
-        }
+        }*/
 
         private void TransferMoneyMenu()
         {
@@ -841,7 +842,7 @@ namespace BankApp
         {
             return _accounts.SingleOrDefault(a => a.AccountNumber == number);
         }
-
+        
         //Order customers by customer number
         private void OrderCustomers()
         {
@@ -949,35 +950,6 @@ namespace BankApp
             }
         }
 
-        public void Deposit(int accountNumber, decimal amount)
-        {
-            if (!AccountExist(accountNumber))
-            {
-                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
-                return;
-            }
-
-            if (amount <= 0)
-            {
-                Console.WriteLine("\nBelopp måste vara positivt");
-                return;
-            }
-
-            //Try to deposit, if succesfull - returns an transaction
-            Transaction transaction = GetAccountByNumber(accountNumber).Deposit(amount);
-
-            if (transaction != null)
-            {
-                //Add to journal
-                journal.AddTransaction(transaction);
-                Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades.", amount, accountNumber);
-            }
-            else
-            {
-                Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
-            }
-        }
-
         //Create new customer
         public void CustomerCreate(string organisationNumber, string name, string adress,
             string city, string region, string postNumber, string country, string phoneNumber)
@@ -1075,6 +1047,7 @@ namespace BankApp
             }
         }
 
+        //Remove Customer
         public void CustomerRemove(int customerNr)
         {
             //Check if it's not a valid customer number
@@ -1118,6 +1091,36 @@ namespace BankApp
             Console.WriteLine("\nKund {0} har raderats.", customerNr);
         }
 
+        //Deposit to account
+        public void Deposit(int accountNumber, decimal amount)
+        {
+            if (!AccountExist(accountNumber))
+            {
+                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
+                return;
+            }
+
+            if (amount <= 0)
+            {
+                Console.WriteLine("\nBelopp måste vara positivt");
+                return;
+            }
+
+            //Try to deposit, if succesfull - returns an transaction
+            Transaction transaction = GetAccountByNumber(accountNumber).Deposit(amount);
+
+            if (transaction != null)
+            {
+                //Add to journal
+                journal.AddTransaction(transaction);
+                Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades.", amount, accountNumber);
+            }
+            else
+            {
+                Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
+            }
+        }
+
         //Get customers info based on name or city
         public void SearchCustomers(string search)
         {
@@ -1136,6 +1139,37 @@ namespace BankApp
             }
         }
 
+        //Withdraw from account
+        public void Withdraw(int accountNumber, decimal amount)
+        {
+            if (!AccountExist(accountNumber))
+            {
+                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
+                return;
+            }
+
+            if (amount <= 0)
+            {
+                Console.WriteLine("\nBelopp måste anges som en positiv summa.");
+                return;
+            }
+
+            //Try to withdraw, if succesfull - returns an transaction
+            Account account = GetAccountByNumber(accountNumber);
+            Transaction transaction = account.Withdraw(amount);
+
+            if (transaction != null)
+            {
+                //Add to journal
+                journal.AddTransaction(transaction);
+                Console.WriteLine("\nEtt uttag på {0} kr från konto {1} lyckades.", amount, accountNumber);
+            }
+            else
+            {
+                Console.WriteLine("\nEtt uttag på {0} kr från konto {1} lyckades inte.", amount, accountNumber);
+                Console.WriteLine("Kan max ta ut {0} kr.", account.MaxPossibleWithdraw());
+            }
+        }
 
         //Check if a specific account
         private bool AccountExist(int accountNumber)

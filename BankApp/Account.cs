@@ -81,7 +81,7 @@ namespace BankApp
             Balance += amount;
             return new DepositTransaction(DateTime.Now, AccountNumber, amount, Balance);
         }
-
+        
         public decimal WithdrawRequest(decimal amount)
         {
             //No positive amounts cannot be withdrawn from account
@@ -101,6 +101,20 @@ namespace BankApp
             //It's possible to withdraw the amount
             Balance -= amount;
             return amount;
+        }
+
+        public WithdrawalTransaction Withdraw(decimal amount)
+        {
+            //No negative amounts cannot be withdrawn from account (or zero)
+            //or balance would be to low
+            if (amount <= 0.0m || amount > MaxPossibleWithdraw())
+            {
+                return null;
+            }
+
+            //It's possible to withdraw the amount
+            Balance -= amount;
+            return new WithdrawalTransaction(DateTime.Now, AccountNumber, amount, Balance);
         }
 
         public Transaction AddDailyInterest()
@@ -155,6 +169,11 @@ namespace BankApp
                 Console.Write(", skuldränta {0}%", DebtInterest);
 
             Console.WriteLine();
+        }
+
+        public decimal MaxPossibleWithdraw()
+        {
+            return Balance + CreditLimit;
         }
     }
 }

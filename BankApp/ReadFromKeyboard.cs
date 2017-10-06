@@ -38,5 +38,18 @@ namespace BankApp
                 Console.WriteLine("Fältet kan inte vara tomt försök igen");
             }
         }
+
+        //Force the user to input a decimalnumber
+        public static decimal GetDecimal()
+        {
+            do
+            {
+                Console.Write("> ");
+                string ammountStr = Console.ReadLine();
+
+                if (decimal.TryParse(ammountStr, out decimal amount))
+                    return amount;
+            } while (true);
+        }
     }
 }
