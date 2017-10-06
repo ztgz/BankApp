@@ -71,11 +71,11 @@ namespace BankApp
                         break;
                     case 10:
                         //The daliy transactions for all accounts
-                        //DailyTransactionMenu();
+                        DailyTransactionMenu();
                         break;
                     case 11:
                         //All transactions for an account
-                        //AccountTransactionMenu();
+                        AccountTransactionMenu();
                         break;
                     case 12:
                         //Set interest-rate for an account
@@ -147,6 +147,17 @@ namespace BankApp
             int accountNum = ReadFromKeyboard.GetInt();
 
             bank.AccountRemove(accountNum);
+        }
+
+        private void AccountTransactionMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Transaktioner för konto *");
+
+            Console.WriteLine("Se transaktioner för konto, ange konto:");
+            int accountNumber = ReadFromKeyboard.GetInt();
+
+            bank.PrintTransactions(accountNumber);
         }
 
         private void CustomerCreateMenu()
@@ -222,6 +233,14 @@ namespace BankApp
             bank.SearchCustomers(customerSearch);
         }
 
+        private void DailyTransactionMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Transaktionshistorik *\n");
+
+            bank.PrintDailyTransactions();
+        }
+
         private void DepositMenu()
         {
             Console.Clear();
@@ -269,5 +288,7 @@ namespace BankApp
 
             bank.Withdraw(accountNumber, amount);
         }
+
+        
     }
 }

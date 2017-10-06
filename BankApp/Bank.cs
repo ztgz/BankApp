@@ -111,11 +111,11 @@ namespace BankApp
                         break;
                     case 10:
                         //The daliy transactions for all accounts
-                        DailyTransactionMenu();
+                        //DailyTransactionMenu();
                         break;
                     case 11:
                         //All transactions for an account
-                        AccountTransactionMenu();
+                        //AccountTransactionMenu();
                         break;
                     case 12:
                         //Set interest-rate for an account
@@ -418,15 +418,15 @@ namespace BankApp
             }
         }*/
 
-        private void DailyTransactionMenu()
+        /*private void DailyTransactionMenu()
         {
             Console.Clear();
             Console.WriteLine("* Transaktionshistorik *\n");
 
             journal.PrintDailyTransactions();
-        }
+        }*/
 
-        private void AccountTransactionMenu()
+        /*private void AccountTransactionMenu()
         {
             Console.Clear();
             Console.WriteLine("* Transaktioner för konto *");
@@ -440,7 +440,7 @@ namespace BankApp
             {
                 journal.PrintTransactions(accountNumber);
             }
-        }
+        }*/
 
         private void AccountSetInterestMenu()
         {
@@ -1124,6 +1124,24 @@ namespace BankApp
             else
             {
                 Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
+            }
+        }
+
+        //Print the daily transactions
+        public void PrintDailyTransactions()
+        {
+            journal.PrintDailyTransactions();
+        }
+
+        public void PrintTransactions(int accountNumber)
+        {
+            if (!accountNumber.ValidAccountNumber())
+            {
+                Console.WriteLine("\n{0} är inte ett korrekt kontonummer.", accountNumber);
+            }
+            else
+            {
+                journal.PrintTransactions(accountNumber);
             }
         }
 

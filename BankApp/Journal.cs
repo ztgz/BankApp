@@ -58,7 +58,7 @@ namespace BankApp
             dailyTransactions = dailyTransactions.Where(t => t.GetDate().Day == date.Day
                                                              && t.GetDate().Month == date.Month &&
                                                              t.GetDate().Year == date.Year).ToList();
-            
+            Console.WriteLine();
             foreach (var trans in dailyTransactions)
             {
                 Console.WriteLine(trans.GetInfo());
@@ -74,6 +74,7 @@ namespace BankApp
             var transactions = Transaction.GetTransactionsHistory()
                 .Where(t => t.RecivingAccount == accountNumber || t.SendingAccount == accountNumber);
 
+            Console.WriteLine("\n-Transactions-");
             foreach (var transaction in transactions)
             {
                 Console.WriteLine(transaction.GetInfo());
