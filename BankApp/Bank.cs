@@ -98,7 +98,7 @@ namespace BankApp
                         break;
                     case 7:
                         //Deposit money to an account
-                        DepositMenu();
+                        //DepositMenu();
                         break;
                     case 8:
                         //Withdraw money from an account
@@ -323,7 +323,7 @@ namespace BankApp
                 RemoveAccount(accountNum);
             }
         }*/
-
+        /*
         private void DepositMenu()
         {
             Console.Clear();
@@ -355,7 +355,7 @@ namespace BankApp
                     Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
                 }
             }
-        }
+        }*/
 
         private void WithdrawalMenu()
         {
@@ -947,7 +947,35 @@ namespace BankApp
             {
                 Console.WriteLine("\nKonto {0} finns inte.", accountNumber);
             }
-            
+        }
+
+        public void Deposit(int accountNumber, decimal amount)
+        {
+            if (!AccountExist(accountNumber))
+            {
+                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
+                return;
+            }
+
+            if (amount <= 0)
+            {
+                Console.WriteLine("\nBelopp måste vara positivt");
+                return;
+            }
+
+            //Try to deposit, if succesfull - returns an transaction
+            Transaction transaction = GetAccountByNumber(accountNumber).Deposit(amount);
+
+            if (transaction != null)
+            {
+                //Add to journal
+                journal.AddTransaction(transaction);
+                Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades.", amount, accountNumber);
+            }
+            else
+            {
+                Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
+            }
         }
 
         //Create new customer

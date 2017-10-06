@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankApp.Transactions
 {
-    class DepositTransaction : Transaction
+    public class DepositTransaction : Transaction
     {
         public DepositTransaction(DateTime date, int account, decimal amount, decimal accountBalance)
         {

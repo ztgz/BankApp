@@ -59,7 +59,7 @@ namespace BankApp
                         break;
                     case 7:
                         //Deposit money to an account
-                        //DepositMenu();
+                        DepositMenu();
                         break;
                     case 8:
                         //Withdraw money from an account
@@ -222,6 +222,43 @@ namespace BankApp
             bank.CustomerRemove(customerNum);
         }
 
-        
+        private void DepositMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Insättning *");
+
+            Console.WriteLine("Sätt in pengar till konto, ange konto:");
+            int accountNumber = ReadFromKeyboard.GetInt();
+
+            Console.WriteLine("Insättningsbelopp:");
+            decimal amount = ReadFromKeyboard.GetInt();
+
+            bank.Deposit(accountNumber, amount);
+
+            /*
+            //check if account number is valid && Exsits
+            if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
+            {
+                //Get the account
+                Account account = GetAccountByNumber(accountNumber);
+
+                //Get the amount to deposit
+                Console.WriteLine("Insättningsbelopp?");
+                decimal amount = ReadDecimalFromKeyboard();
+
+
+                if (account.Deposit(amount))
+                {
+                    //Log the transaction
+                    journal.Deposit(account.AccountNumber, amount, account.Balance);
+
+                    Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades.", amount, accountNumber);
+                }
+                else
+                {
+                    Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
+                }
+            }*/
+        }
     }
 }

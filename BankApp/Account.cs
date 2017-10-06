@@ -72,14 +72,14 @@ namespace BankApp
 
         }
 
-        public bool Deposit(decimal amount)
+        public DepositTransaction Deposit(decimal amount)
         {
             //Cannot deposit a nonpositive number
             if (amount <= 0)
-                return false;
+                return null;
 
             Balance += amount;
-            return true;
+            return new DepositTransaction(DateTime.Now, AccountNumber, amount, Balance);
         }
 
         public decimal WithdrawRequest(decimal amount)
