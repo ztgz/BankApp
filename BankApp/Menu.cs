@@ -83,7 +83,7 @@ namespace BankApp
                         break;
                     case 13:
                         //Add daily rent to accounts
-                        //AddDaliyInterestMenu();
+                        DaliyInterestMenu();
                         break;
                     case 14:
                         //Set creditlimit and interest for an account
@@ -244,6 +244,14 @@ namespace BankApp
             string customerSearch = Console.ReadLine();
 
             bank.SearchCustomers(customerSearch);
+        }
+
+        private void DaliyInterestMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Daglig ränta *");
+
+            bank.DailyInterest();           
         }
 
         private void DailyTransactionMenu()

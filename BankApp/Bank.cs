@@ -123,7 +123,7 @@ namespace BankApp
                         break;
                     case 13:
                         //Add daily rent to accounts
-                        AddDaliyInterestMenu();
+                        //AddDaliyInterestMenu();
                         break;
                     case 14:
                         //Set creditlimit and interest for an account
@@ -358,38 +358,38 @@ namespace BankApp
             }
         }*/
 
-       /* private void WithdrawalMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("* Uttag *");
+        /* private void WithdrawalMenu()
+         {
+             Console.Clear();
+             Console.WriteLine("* Uttag *");
 
-            Console.WriteLine("Ta ut pengar ifrån konto, ange konto:");
-            int accountNumber = ReadIntFromKeyboard();
+             Console.WriteLine("Ta ut pengar ifrån konto, ange konto:");
+             int accountNumber = ReadIntFromKeyboard();
 
-            //check if account number is valid && Exsits
-            if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
-            {
-                //Get the account
-                Account account = GetAccountByNumber(accountNumber);
+             //check if account number is valid && Exsits
+             if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
+             {
+                 //Get the account
+                 Account account = GetAccountByNumber(accountNumber);
 
-                //Get the amount to deposit
-                Console.WriteLine("Hur mycket vill du ta ut? (saldo = {0})", account.Balance);
-                decimal amount = ReadDecimalFromKeyboard();
+                 //Get the amount to deposit
+                 Console.WriteLine("Hur mycket vill du ta ut? (saldo = {0})", account.Balance);
+                 decimal amount = ReadDecimalFromKeyboard();
 
-                //How much money that were recived
-                decimal recivedAmmount = account.WithdrawRequest(amount);
+                 //How much money that were recived
+                 decimal recivedAmmount = account.WithdrawRequest(amount);
 
-                //If withdrawal was accepted
-                if (recivedAmmount > 0)
-                {
-                    //Log the transaction
-                    journal.Withdrawal(account.AccountNumber, recivedAmmount, account.Balance);
+                 //If withdrawal was accepted
+                 if (recivedAmmount > 0)
+                 {
+                     //Log the transaction
+                     journal.Withdrawal(account.AccountNumber, recivedAmmount, account.Balance);
 
-                    Console.WriteLine("\nEtt uttag på {0} kr från konto {1} genomfördes.", recivedAmmount,
-                        accountNumber);
-                }
-            }
-        }*/
+                     Console.WriteLine("\nEtt uttag på {0} kr från konto {1} genomfördes.", recivedAmmount,
+                         accountNumber);
+                 }
+             }
+         }*/
 
         /*private void TransferMoneyMenu()
         {
@@ -461,7 +461,7 @@ namespace BankApp
             }
         }*/
 
-        private void AddDaliyInterestMenu()
+        /*private void AddDaliyInterestMenu()
         {
             Console.Clear();
             Console.WriteLine("* Daglig ränta *");
@@ -479,6 +479,7 @@ namespace BankApp
 
             Console.WriteLine("\nDaglig ränta utförd på {0} konton.", i);
         }
+        */
 
         private void AccountSetCreditMenu()
         {
@@ -1112,6 +1113,24 @@ namespace BankApp
             _customers = _customers.Where(c => c.CustomerNumber != customerNr).ToList();
 
             Console.WriteLine("\nKund {0} har raderats.", customerNr);
+        }
+
+        //Add/take interest from the accounts
+        public void DailyInterest()
+        {
+            int i = 0;
+
+            foreach (var account in _accounts)
+            {
+                Transaction transaction = account.AddDailyInterest();
+                if (transaction != null)
+                {
+                    journal.AddTransaction(transaction);
+                    i++;
+                }
+            }
+
+            Console.WriteLine("\nDaglig ränta utförd på {0} konton.", i);
         }
 
         //Deposit to account
