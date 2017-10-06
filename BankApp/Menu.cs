@@ -67,7 +67,7 @@ namespace BankApp
                         break;
                     case 9:
                         //Withdraw money from an account
-                        //TransferMoneyMenu();
+                        TransferMoneyMenu();
                         break;
                     case 10:
                         //The daliy transactions for all accounts
@@ -236,6 +236,26 @@ namespace BankApp
             bank.Deposit(accountNumber, amount);
         }
 
+        private void TransferMoneyMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("* Överföring mellan konton *");
+
+            Console.WriteLine("Flytta pengar från konto, ange konto: ");
+            int fromAccountNumber = ReadFromKeyboard.GetInt();
+
+            Console.WriteLine("Flytta pengar till konto, ange konto: ");
+            int toAccountNumber = ReadFromKeyboard.GetInt();
+
+            Console.WriteLine("Vilken summa vill du överföra från konto {0} till konto {1}", 
+                fromAccountNumber, toAccountNumber);
+            decimal amount = ReadFromKeyboard.GetDecimal();
+
+            //Try to transfer amount
+            bank.Transfer(fromAccountNumber, toAccountNumber, amount);
+
+        }
+
         private void WithdrawalMenu()
         {
             Console.Clear();
@@ -248,31 +268,6 @@ namespace BankApp
             decimal amount = ReadFromKeyboard.GetDecimal();
 
             bank.Withdraw(accountNumber, amount);
-
-            /*
-            //check if account number is valid && Exsits
-            if (IsAccountNumberValid(accountNumber) && AccountExist(accountNumber))
-            {
-                //Get the account
-                Account account = GetAccountByNumber(accountNumber);
-
-                //Get the amount to deposit
-                Console.WriteLine("Hur mycket vill du ta ut? (saldo = {0})", account.Balance);
-                decimal amount = ReadDecimalFromKeyboard();
-
-                //How much money that were recived
-                decimal recivedAmmount = account.WithdrawRequest(amount);
-
-                //If withdrawal was accepted
-                if (recivedAmmount > 0)
-                {
-                    //Log the transaction
-                    journal.Withdrawal(account.AccountNumber, recivedAmmount, account.Balance);
-
-                    Console.WriteLine("\nEtt uttag på {0} kr från konto {1} genomfördes.", recivedAmmount,
-                        accountNumber);
-                }
-            }*/
         }
     }
 }

@@ -107,7 +107,7 @@ namespace BankApp
                         break;
                     case 9:
                         //Withdraw money from an account
-                        TransferMoneyMenu();
+                        //TransferMoneyMenu();
                         break;
                     case 10:
                         //The daliy transactions for all accounts
@@ -391,7 +391,7 @@ namespace BankApp
             }
         }*/
 
-        private void TransferMoneyMenu()
+        /*private void TransferMoneyMenu()
         {
             Console.Clear();
             Console.WriteLine("* Överföring mellan konton *");
@@ -416,7 +416,7 @@ namespace BankApp
                     TransferBetweenAccounts(fromAccountNumber, toAccountNumber, amount);
                 }
             }
-        }
+        }*/
 
         private void DailyTransactionMenu()
         {
@@ -505,7 +505,7 @@ namespace BankApp
             }
         }
 
-        private void TransferBetweenAccounts(int fromAccount, int toAccount, decimal amount)
+        /*private void TransferBetweenAccounts(int fromAccount, int toAccount, decimal amount)
         {
             //Control that it's different accounts
             if (fromAccount == toAccount)
@@ -540,7 +540,7 @@ namespace BankApp
 
                 Console.WriteLine("\nÖverföring lyckades.");
             }
-        }
+        }*/
 
         //Returns true if number is of customer number format
         /*private bool IsCustomerNumberFormat(int number)
@@ -878,6 +878,12 @@ namespace BankApp
         //Create new account
         public void AccountCreate(int customerNumber)
         {
+            if (GetCustomerByNumber(customerNumber) == null)
+            {
+                Console.WriteLine("Kund {0} existerar inte.", customerNumber);
+                return;
+            }
+
             //Order the accounts based on account number
             OrderAccounts();
 
@@ -1136,6 +1142,56 @@ namespace BankApp
             foreach (var filtredCustomer in filtredCustomers)
             {
                 Console.WriteLine(" {0} | {1}", filtredCustomer.CustomerNumber, filtredCustomer.Name);
+            }
+        }
+
+        //Transferbetween two accounts
+        public void Transfer(int fromAccountNumber, int toAccountNumber, decimal amount)
+        {
+            //Control that it's different accounts
+            if (fromAccountNumber == toAccountNumber)
+            {
+                Console.WriteLine("\nDu måste ange olika kontonummer.");
+                return;
+            }
+
+            if (amount <= 0)
+            {
+                Console.WriteLine("\nDu kan bara överföra positiva belopp.");
+                return;
+            }
+
+            //Get accounts
+            Account senderAcc = GetAccountByNumber(fromAccountNumber);
+            Account recivingAcc = GetAccountByNumber(toAccountNumber);
+
+            //Control that sending and reciving account exist
+            if (senderAcc == null || recivingAcc == null)
+            {
+                if (senderAcc == null)
+                    Console.WriteLine("\nKonto {0} finns inte.", fromAccountNumber);
+                if (recivingAcc == null)
+                    Console.WriteLine("\nKonto {0} finns inte.", toAccountNumber);
+                return;
+            }
+
+            Transaction withdrawal = senderAcc.Withdraw(amount);
+            
+            //If withdrawal was succesfull
+            if (withdrawal != null)
+            {
+                recivingAcc.Deposit(amount);
+                //Add transfer to journal
+                journal.Transfer(amount, recivingAcc.AccountNumber, recivingAcc.Balance, 
+                    senderAcc.AccountNumber, senderAcc.Balance);
+
+                Console.WriteLine("\nEn överföring på {0} kr från konto {1} till konto {2} lyckades",
+                    amount, senderAcc.AccountNumber, recivingAcc.AccountNumber);
+            }
+            else
+            {
+                Console.WriteLine("\nTransaktion genomfördes ej.");
+                Console.WriteLine("Kan max överföra {0} kr från konto {1}.", senderAcc.MaxPossibleWithdraw(), senderAcc.AccountNumber);
             }
         }
 

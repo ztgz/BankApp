@@ -22,6 +22,7 @@ namespace BankApp
             transaction.SaveTransaction();
         }
 
+        /*
         public void Deposit(int toAccount, decimal amount, decimal accountBalance)
         {
             Transaction transaction = new DepositTransaction(DateTime.Now, toAccount, amount, accountBalance);
@@ -33,7 +34,7 @@ namespace BankApp
             Transaction transaction = new WithdrawalTransaction(DateTime.Now, fromAccount, amount, accountBalance);
             AddTransaction(transaction);
         }
-
+        */
         public void Transfer(decimal amount, int recivingAccount, decimal recivingAccountBalance,
             int sendingAccount, decimal sendingAccountBalance)
         {
