@@ -159,10 +159,10 @@ namespace BankApp
             int accountNumber = ReadFromKeyboard.GetInt();
 
             Console.WriteLine("Vilken kreditgräns ska kontot ha:");
-            decimal creditLimt = ReadFromKeyboard.GetInt();
+            decimal creditLimt = ReadFromKeyboard.GetDecimal();
 
             Console.WriteLine("Vilken skuldränta ska kontot ha:");
-            decimal debtInterest = ReadFromKeyboard.GetInt();
+            decimal debtInterest = ReadFromKeyboard.GetDecimal();
 
             bank.AccountSetCredit(accountNumber, creditLimt, debtInterest);
         }

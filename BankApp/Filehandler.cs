@@ -10,9 +10,9 @@ namespace BankApp
 {
     class Filehandler
     {
-        private const string fileName = @"files\bankdata-small.txt";
+        //private const string fileName = @"files\bankdata-small.txt";
         //private const string fileName = @"files\bankdata.txt";
-
+        private const string fileName = @"files\20171007-1233.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -89,7 +89,9 @@ namespace BankApp
         {
             string file = @"files\" + DateTime.Now.ToString("yyyyMMdd-hhmm") + ".txt";
 
-            using (StreamWriter writer = new StreamWriter(file))
+            Console.WriteLine("Sparar " + file.Substring(6));
+
+            using (StreamWriter writer = new StreamWriter(file, false, win1252))
             {
                 int numberOfCustomers = customers.Count;
                 int numberOfAccounts = accounts.Count;
@@ -139,9 +141,24 @@ namespace BankApp
             //What is loaded
             int accountNumber = int.Parse(parameters[0]);
             int ownersCustomerNumber = int.Parse(parameters[1]);
-            decimal balance = decimal.Parse(parameters[2], CultureInfo.InvariantCulture);
+            decimal balance = decimal.Parse(parameters[2]);
 
-            return new Account(accountNumber, ownersCustomerNumber, balance);
+            Account account = new Account(accountNumber, ownersCustomerNumber, balance);
+
+            //if data is in detailed format
+            if (parameters.Length == 6)
+            {
+                decimal saveInterest = decimal.Parse(parameters[3]);
+                decimal debtInterest = decimal.Parse(parameters[4]);
+                decimal creditLimit = decimal.Parse(parameters[5]);
+
+
+                account.SetSavingInterest(saveInterest);
+                account.SetDebtInterest(debtInterest);
+                account.SetCreditLimit(creditLimit);
+            }
+
+            return account;
         }
 
         private void PrintStatistics(List<Customer> customers, List<Account> accounts)
@@ -164,7 +181,7 @@ namespace BankApp
         {
             _detailed = !_detailed;
             if(_detailed)
-                Console.WriteLine("\nDu sparar nu i det nya mer detaljerade formatet.");
+                Console.WriteLine("\nDu sparar nu i det nya och mer detaljerade formatet.");
             else
                 Console.WriteLine("\nDu sparar nu i det gamla formatet.");
         }
