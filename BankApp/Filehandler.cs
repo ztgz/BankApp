@@ -113,6 +113,15 @@ namespace BankApp
 
         }
 
+        public void ChangeFormat()
+        {
+            _detailed = !_detailed;
+            if (_detailed)
+                Console.WriteLine("\nDu sparar nu i det nya och mer detaljerade formatet.");
+            else
+                Console.WriteLine("\nDu sparar nu i det gamla formatet.");
+        }
+
         private Customer CustomerCreate(string line)
         {            
             string[] parameters = line.Split(';');
@@ -175,13 +184,6 @@ namespace BankApp
             Console.ReadKey();
         }
 
-        public void ChangeFormat()
-        {
-            _detailed = !_detailed;
-            if(_detailed)
-                Console.WriteLine("\nDu sparar nu i det nya och mer detaljerade formatet.");
-            else
-                Console.WriteLine("\nDu sparar nu i det gamla formatet.");
-        }
+        
     }
 }

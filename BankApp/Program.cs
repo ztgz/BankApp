@@ -6,12 +6,6 @@ namespace BankApp
     {
         static void Main(string[] args)
         {
-            /*
-            //Create the bank
-            Bank bank = new Bank();
-            
-            //Run the bank app
-            bank.Run();*/
             try
             {
                 Menu menu = new Menu();

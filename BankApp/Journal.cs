@@ -7,15 +7,17 @@ namespace BankApp
 {
     class Journal
     {
-        private List<Transaction> dailyTransactions;
+        private List<Transaction> _dailyTransactions;
+
         public Journal()
         {
-            dailyTransactions = new List<Transaction>();
+            _dailyTransactions = new List<Transaction>();
         }
 
+        //Store the transaction in the journal
         public void AddTransaction(Transaction transaction)
         {
-            dailyTransactions.Add(transaction);
+            _dailyTransactions.Add(transaction);
             transaction.SaveTransaction();
         }
 
@@ -24,11 +26,11 @@ namespace BankApp
             DateTime date = DateTime.Now;
             
             //Filter it incase that the system has been running for more than one day
-            dailyTransactions = dailyTransactions.Where(t => t.GetDate().Day == date.Day
+            _dailyTransactions = _dailyTransactions.Where(t => t.GetDate().Day == date.Day
                                                              && t.GetDate().Month == date.Month &&
                                                              t.GetDate().Year == date.Year).ToList();
             Console.WriteLine();
-            foreach (var trans in dailyTransactions)
+            foreach (var trans in _dailyTransactions)
             {
                 Console.WriteLine(trans.GetInfo());
             }
@@ -37,7 +39,7 @@ namespace BankApp
         public void PrintTransactions(int accountNumber)
         {
             /* Om bara dagliga transaktioner ska användas
-            var transactions = dailyTransactions.Where(t => t.RecivingAccount == accountNumber || t.SendingAccount == accountNumber);
+            var transactions = _dailyTransactions.Where(t => t.RecivingAccount == accountNumber || t.SendingAccount == accountNumber);
             */
 
             var transactions = Transaction.GetTransactionsHistory()
