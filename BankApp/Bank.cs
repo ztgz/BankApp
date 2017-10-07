@@ -414,15 +414,14 @@ namespace BankApp
                 return;
             }
 
-            Transaction withdrawal = senderAcc.Withdraw(amount);
-            
+
+            //Try to transfer from sendingaccount to reciving account
+            Transaction transaction = recivingAcc.Transfer(senderAcc, amount);
+
             //If withdrawal was succesfull
-            if (withdrawal != null)
+            if (transaction != null)
             {
-                recivingAcc.Deposit(amount);
-                //Add transfer to journal
-                _journal.Transfer(amount, recivingAcc.AccountNumber, recivingAcc.Balance, 
-                    senderAcc.AccountNumber, senderAcc.Balance);
+                _journal.AddTransaction(transaction);
 
                 Console.WriteLine("\nEn överföring på {0} kr från konto {1} till konto {2} lyckades",
                     amount, senderAcc.AccountNumber, recivingAcc.AccountNumber);

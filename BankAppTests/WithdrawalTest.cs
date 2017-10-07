@@ -10,72 +10,62 @@ namespace BankAppTests
         [TestMethod]
         public void Withdraw_Insufficient_Balance_No_Balance_Change()
         {
-            Account account = new Account(10000, 1000, 100);
+            Account account = new Account(0, 0, 100);
             decimal expectedBalance = 100;
 
-            account.WithdrawRequest(150);
+            account.Withdraw(150);
 
             Assert.AreEqual(expectedBalance, account.Balance);
         }
 
         [TestMethod]
-        public void Withdraw_Money_Change_Saldo()
+        public void Withdraw_Money_Change_Balance()
         {
-            Account account = new Account(10000, 1000, 100);
+            Account account = new Account(0, 0, 100);
 
             decimal expectedBalance = 40;
 
-            account.WithdrawRequest(60);
+            account.Withdraw(60);
 
             Assert.AreEqual(expectedBalance, account.Balance);
         }
 
         [TestMethod]
-        public void Withdraw_Nonpositive_Amount()
+        public void Withdraw_Nonpositive_Amount_No_Change()
         {
-            Account account = new Account(10000, 1000, 100);
+            Account account = new Account(0, 0, 100);
 
             decimal expectedBalance = 100;
 
-            account.WithdrawRequest(-60);
+            account.Withdraw(-60);
 
             Assert.AreEqual(expectedBalance, account.Balance);
         }
 
         [TestMethod]
-        public void Withdraw_Nonpositive_Amount_No_Withdrawal()
+        public void Withdrawal_With_Creditlimit()
         {
             Account account = new Account(10000, 1000, 100);
+            account.SetCreditLimit(100);
 
-            decimal expected = 0;
+            decimal expected = -50;
 
-            decimal actual = account.WithdrawRequest(-60);
+            account.Withdraw(150);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, account.Balance);
         }
 
         [TestMethod]
-        public void Withdraw_Insufficient_Balance_No_Withdrawal()
+        public void Withdrawal_With_Creditlimit_Insufficient_Balance()
         {
             Account account = new Account(10000, 1000, 100);
-
-            decimal expected = 0;
-
-            decimal actual = account.WithdrawRequest(160);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Withdraw_Withdrawal()
-        {
-            Account account = new Account(10000, 1000, 100);
+            account.SetCreditLimit(100);
 
             decimal expected = 100;
 
-            decimal actual = account.WithdrawRequest(100);
+            account.Withdraw(250);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, account.Balance);
         }
     }
 }

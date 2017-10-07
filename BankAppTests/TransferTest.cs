@@ -8,16 +8,85 @@ namespace BankAppTests
     public class TransferTest
     {
         [TestMethod]
-        public void Transer_Not_Enough_Money()
+        public void Transfer_Not_Enough_Money()
         {
-            Account account = new Account(10000, 1000, 100);
+            Account sender = new Account(0, 0, 100);
+            Account reciver = new Account(1, 1, 0);
+
+            decimal expectedBalance = 100;
+
+            reciver.Transfer(sender, 150);
+
+            Assert.AreEqual(expectedBalance, sender.Balance);
+        }
+
+        [TestMethod]
+        public void Transfer_Not_Enough_Money_2()
+        {
+            Account sender = new Account(0, 0, 100);
+            Account reciver = new Account(1, 1, 0);
+
+            decimal expectedBalance = 0;
+
+            reciver.Transfer(sender, 150);
+
+            Assert.AreEqual(expectedBalance, reciver.Balance);
+        }
+
+        [TestMethod]
+        public void Transfer_Regular()
+        {
+            Account sender = new Account(0, 0, 100);
+            Account reciver = new Account(1, 1, 0);
 
             decimal expectedBalance = 40;
 
-            account.WithdrawRequest(60);
+            reciver.Transfer(sender, 60);
 
-            Assert.AreEqual(expectedBalance, account.Balance);
+            Assert.AreEqual(expectedBalance, sender.Balance);
+        }
 
+        [TestMethod]
+        public void Transfer_Regular_2()
+        {
+            Account sender = new Account(0, 0, 100);
+            Account reciver = new Account(1, 1, 0);
+
+            decimal expectedBalance = 60;
+
+            reciver.Transfer(sender, 60);
+
+            Assert.AreEqual(expectedBalance, reciver.Balance);
+        }
+
+        [TestMethod]
+        public void Transfer_With_Credit()
+        {
+            Account sender = new Account(0, 0, 100);
+            sender.SetCreditLimit(300);
+
+            Account reciver = new Account(1, 1, 0);
+
+            decimal expectedBalance = -250;
+
+            reciver.Transfer(sender, 350);
+
+            Assert.AreEqual(expectedBalance, sender.Balance);
+        }
+
+        [TestMethod]
+        public void Transfer_With_Credit_2()
+        {
+            Account sender = new Account(0, 0, 100);
+            sender.SetCreditLimit(300);
+
+            Account reciver = new Account(1, 1, 0);
+
+            decimal expectedBalance = 350;
+
+            reciver.Transfer(sender, 350);
+
+            Assert.AreEqual(expectedBalance, reciver.Balance);
         }
     }
 }

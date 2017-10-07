@@ -77,27 +77,6 @@ namespace BankApp
             Balance += amount;
             return new DepositTransaction(DateTime.Now, AccountNumber, amount, Balance);
         }
-        
-        public decimal WithdrawRequest(decimal amount)
-        {
-            //No positive amounts cannot be withdrawn from account
-            if (amount <= 0.0m)
-            {
-                Console.WriteLine("\nKan enbart ta ut positiva belopp från kontot.");
-                return 0.0m;
-            }
-
-            //Cannot withdraw, balance would be to low
-            if (Balance - amount < 0 - CreditLimit)
-            {
-                Console.WriteLine("\nFinns ej tillräckligt med pengar på konto {0} för begärd överföring ({1} kr).", AccountNumber, amount);
-                return 0.0m;
-            }
-
-            //It's possible to withdraw the amount
-            Balance -= amount;
-            return amount;
-        }
 
         public WithdrawalTransaction Withdraw(decimal amount)
         {
@@ -154,6 +133,21 @@ namespace BankApp
             return null;
         }
 
+        public TransferTransaction Transfer(Account sendingAccount, decimal amount)
+        {
+            //Try to withdraw from sendningAccount & if withdrawal from account was succesfull
+            if (sendingAccount.Withdraw(amount) != null)
+            {
+                Deposit(amount);
+                
+                return new TransferTransaction(DateTime.Now, amount, AccountNumber, Balance,
+                    sendingAccount.AccountNumber, sendingAccount.Balance);
+            }
+
+            //Transfer failed
+            return null;
+        }
+
         public void PrintAccount()
         {
             Console.Write("{0}: {1} kr", AccountNumber, Balance);
@@ -189,7 +183,6 @@ namespace BankApp
             }
 
             return sb.ToString();
-
         }
     }
 }

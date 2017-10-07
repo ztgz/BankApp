@@ -2,7 +2,7 @@
 
 namespace BankApp.Transactions
 {
-    class TransferTransaction : Transaction
+    public class TransferTransaction : Transaction
     {
         public TransferTransaction(DateTime date, decimal amount, 
             int recivingAccount, decimal recivingAccountBalance,
