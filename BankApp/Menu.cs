@@ -84,8 +84,13 @@ namespace BankApp
                         //Set creditlimit and interest for an account
                         AccountSetCreditMenu();
                         break;
+                    case 20:
+                        //Changes the way format files are saved
+                        bank.ChangeSaveFormat();
+                        break;
                     case 0:
                         exitApp = true;
+                        bank.Close();
                         break;
                 }
 
@@ -117,6 +122,7 @@ namespace BankApp
             Console.WriteLine("12) Ange sparränta på konto");
             Console.WriteLine("13) Daglig ränta");
             Console.WriteLine("14) Ange kreditgräns och skuldränta på konto");
+            Console.WriteLine("20) Ändra sparformat");
             Console.WriteLine();
         }
 

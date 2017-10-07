@@ -10,16 +10,25 @@ namespace BankApp
 {
     class Filehandler
     {
-        //private const string fileName = @"files\bankdata-small.txt";
-        private const string fileName = @"files\bankdata.txt";
+        private const string fileName = @"files\bankdata-small.txt";
+        //private const string fileName = @"files\bankdata.txt";
+
+        private Encoding win1252;
+
+        private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
+
+        public Filehandler()
+        {
+            win1252 = Encoding.GetEncoding("Windows-1252");
+
+            _detailed = false;
+        }
 
         public void LoadData(List<Customer> customers, List<Account> accounts)
         {
             //Removev all current customers and accounts
             customers.Clear();
             accounts.Clear();
-
-            Encoding win1252 = Encoding.GetEncoding("Windows-1252");
 
             StreamReader reader = null;
 
@@ -76,6 +85,34 @@ namespace BankApp
 
         }
 
+        public void SaveData(List<Customer> customers, List<Account> accounts)
+        {
+            string file = @"files\" + DateTime.Now.ToString("yyyyMMdd-hhmm") + ".txt";
+
+            using (StreamWriter writer = new StreamWriter(file))
+            {
+                int numberOfCustomers = customers.Count;
+                int numberOfAccounts = accounts.Count;
+
+                writer.WriteLine(numberOfCustomers);
+
+                for (int i = 0; i < customers.Count; i++)
+                {
+                    writer.WriteLine(customers[i].ToString());
+                }
+
+                writer.WriteLine(numberOfAccounts);
+
+                for (int i = 0; i < accounts.Count; i++)
+                {
+                    writer.WriteLine(accounts[i].ToSaveFormat(_detailed));
+                }
+
+                PrintStatistics(customers, accounts);
+            }
+
+        }
+
         private Customer CustomerCreate(string line)
         {            
             string[] parameters = line.Split(';');
@@ -121,6 +158,15 @@ namespace BankApp
 
             Console.WriteLine("\nTryck på valfri tangent för att gå vidare...");
             Console.ReadKey();
+        }
+
+        public void ChangeFormat()
+        {
+            _detailed = !_detailed;
+            if(_detailed)
+                Console.WriteLine("\nDu sparar nu i det nya mer detaljerade formatet.");
+            else
+                Console.WriteLine("\nDu sparar nu i det gamla formatet.");
         }
     }
 }

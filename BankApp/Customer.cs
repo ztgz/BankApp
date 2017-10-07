@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace BankApp
 {
@@ -46,5 +47,24 @@ namespace BankApp
                 (Region != "" ? $"{Region}, " : ""), Country);
             Console.WriteLine("Telefonnummer: {0}", PhoneNumber);
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            //Build to return data
+            sb.Append(CustomerNumber);
+            sb.Append(";" + OrganisationNumber);
+            sb.Append(";" + Name);
+            sb.Append(";" + Address);
+            sb.Append(";" + City);
+            sb.Append(";" + Region);
+            sb.Append(";" + PostNumber);
+            sb.Append(";" + Country);
+            sb.Append(";" + PhoneNumber);
+
+            return sb.ToString();
+        }
+
     }
 }

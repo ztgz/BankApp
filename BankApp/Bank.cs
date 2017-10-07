@@ -31,6 +31,11 @@ namespace BankApp
             filehandler.LoadData(_customers, _accounts);
         }
 
+        public void Close()
+        {
+            filehandler.SaveData(_customers, _accounts);
+        }
+
         //Create new account
         public void AccountCreate(int customerNumber)
         {
@@ -145,6 +150,12 @@ namespace BankApp
             {
                 GetAccount(accountNumber).SetSavingInterest(interest);
             }
+        }
+
+        //changes the save format
+        public void ChangeSaveFormat()
+        {
+            filehandler.ChangeFormat();
         }
 
         //Create new customer

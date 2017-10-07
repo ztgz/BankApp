@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using BankApp.Transactions;
 
 namespace BankApp
@@ -170,5 +171,23 @@ namespace BankApp
             return Balance + CreditLimit;
         }
 
+        public string ToSaveFormat(bool detailed)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(AccountNumber);
+            sb.Append(";" + OwnersCustomerNumber);
+            sb.Append(";" + Balance);
+
+            //If data is saved in detailed format
+            if (detailed)
+            {
+                sb.Append(";" + SaveInterest);
+                sb.Append(";" + DebtInterest);
+                sb.Append(";" + CreditLimit);
+            }
+
+            return sb.ToString();
+        }
     }
 }
