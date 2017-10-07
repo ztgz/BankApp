@@ -11,8 +11,8 @@ namespace BankApp
     class Filehandler
     {
         //private const string fileName = @"files\bankdata-small.txt";
-        //private const string fileName = @"files\bankdata.txt";
-        private const string fileName = @"files\20171007-1233.txt";
+        private const string fileName = @"files\bankdata.txt";
+        //private const string fileName = @"files\20171007-0228.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -48,7 +48,6 @@ namespace BankApp
 
                     customers.Add(CustomerCreate(line));
                 }
-
                 //Number of accounts from line
                 int numAccounts = int.Parse(reader.ReadLine());
 
@@ -56,7 +55,6 @@ namespace BankApp
                 for (int i = 0; i < numAccounts; i++)
                 {
                     string line = reader.ReadLine();
-
                     accounts.Add(AccountCreate(line));
                 }
 
@@ -141,16 +139,16 @@ namespace BankApp
             //What is loaded
             int accountNumber = int.Parse(parameters[0]);
             int ownersCustomerNumber = int.Parse(parameters[1]);
-            decimal balance = decimal.Parse(parameters[2]);
+            decimal balance = decimal.Parse(parameters[2], CultureInfo.InvariantCulture);
 
             Account account = new Account(accountNumber, ownersCustomerNumber, balance);
 
             //if data is in detailed format
             if (parameters.Length == 6)
             {
-                decimal saveInterest = decimal.Parse(parameters[3]);
-                decimal debtInterest = decimal.Parse(parameters[4]);
-                decimal creditLimit = decimal.Parse(parameters[5]);
+                decimal saveInterest = decimal.Parse(parameters[3], CultureInfo.InvariantCulture);
+                decimal debtInterest = decimal.Parse(parameters[4], CultureInfo.InvariantCulture);
+                decimal creditLimit = decimal.Parse(parameters[5], CultureInfo.InvariantCulture);
 
 
                 account.SetSavingInterest(saveInterest);

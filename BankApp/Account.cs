@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using BankApp.Transactions;
 
@@ -177,14 +178,14 @@ namespace BankApp
 
             sb.Append(AccountNumber);
             sb.Append(";" + OwnersCustomerNumber);
-            sb.Append(";" + Balance);
+            sb.Append(";" + Balance.ToString(CultureInfo.InvariantCulture));
 
             //If data is saved in detailed format
             if (detailed)
             {
-                sb.Append(";" + SaveInterest);
-                sb.Append(";" + DebtInterest);
-                sb.Append(";" + CreditLimit);
+                sb.Append(";" + SaveInterest.ToString(CultureInfo.InvariantCulture));
+                sb.Append(";" + DebtInterest.ToString(CultureInfo.InvariantCulture));
+                sb.Append(";" + CreditLimit.ToString(CultureInfo.InvariantCulture));
             }
 
             return sb.ToString();
