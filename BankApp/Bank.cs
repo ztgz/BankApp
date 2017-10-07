@@ -375,7 +375,7 @@ namespace BankApp
             //Filter on name and city (The search is lowercase)
             var filtredCustomers = _customers.Where(c => c.Name.ToLower().Contains(search)
                                                          || c.City.ToLower().Contains(search));
-
+            
             //Print the filtred list
             Console.WriteLine("\nKundnr| Kund");
             foreach (var filtredCustomer in filtredCustomers)

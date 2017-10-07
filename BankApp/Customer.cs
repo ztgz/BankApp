@@ -5,47 +5,47 @@ namespace BankApp
 {
     public class Customer
     {
-        public int CustomerNumber { get; private set; }
+        public int CustomerNumber { get; }
 
-        public string OrganisationNumber { get; private set; }
+        public string Name { get; }
 
-        public string Name { get; private set; }
+        public string City { get;}
 
-        public string Address { get; private set; }
-        
-        public string City { get; private set; }
+        private readonly string _organisationNumber;
 
-        public string Region { get; private set; }
+        private readonly string _address;
 
-        public string PostNumber { get; private set; }
+        private readonly string _region;
 
-        public string Country { get; private set; }
+        private readonly string _postNumber;
 
-        public string PhoneNumber { get; private set; }
+        private readonly string _country;
+
+        private readonly string _phoneNumber;
 
         public Customer(int customerNumber, string organisationNumber, string name, string adress, 
             string city, string region, string postNumber, string country, string phoneNumber)
         {
             CustomerNumber = customerNumber;
-            OrganisationNumber = organisationNumber;
+            _organisationNumber = organisationNumber;
             Name = name;
 
-            Address = adress;
+            _address = adress;
             City = city;
-            Region = region;
+            _region = region;
 
-            PostNumber = postNumber;
-            Country = country;
-            PhoneNumber = phoneNumber;
+            _postNumber = postNumber;
+            _country = country;
+            _phoneNumber = phoneNumber;
         }
 
         public void PrintCustomer()
         {
-            Console.WriteLine("\nOrganistionsnummer: {0}", OrganisationNumber);
+            Console.WriteLine("\nOrganistionsnummer: {0}", _organisationNumber);
             Console.WriteLine("Namn: {0}", Name);
-            Console.WriteLine("Adress: {0}, {1}, {2}, {3}{4}", Address, PostNumber, City,
-                (Region != "" ? $"{Region}, " : ""), Country);
-            Console.WriteLine("Telefonnummer: {0}", PhoneNumber);
+            Console.WriteLine("Adress: {0}, {1}, {2}, {3}{4}", _address, _postNumber, City,
+                (_region != "" ? $"{_region}, " : ""), _country);
+            Console.WriteLine("Telefonnummer: {0}", _phoneNumber);
         }
 
         public override string ToString()
@@ -54,14 +54,14 @@ namespace BankApp
 
             //Build to return data
             sb.Append(CustomerNumber);
-            sb.Append(";" + OrganisationNumber);
+            sb.Append(";" + _organisationNumber);
             sb.Append(";" + Name);
-            sb.Append(";" + Address);
+            sb.Append(";" + _address);
             sb.Append(";" + City);
-            sb.Append(";" + Region);
-            sb.Append(";" + PostNumber);
-            sb.Append(";" + Country);
-            sb.Append(";" + PhoneNumber);
+            sb.Append(";" + _region);
+            sb.Append(";" + _postNumber);
+            sb.Append(";" + _country);
+            sb.Append(";" + _phoneNumber);
 
             return sb.ToString();
         }
