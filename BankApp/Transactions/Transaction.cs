@@ -9,27 +9,27 @@ namespace BankApp.Transactions
     {
         private const string fileName = @"files\transactionLogg.txt";
 
-        protected DateTime _date;
+        protected DateTime date;
 
         public int RecivingAccount { get; protected set; }
 
         public int SendingAccount { get; protected set; }
 
-        protected decimal _recivingAccountBalance;
+        protected decimal recivingAccountBalance;
 
-        protected decimal _sendingAccountBalance;
+        protected decimal sendingAccountBalance;
 
-        protected decimal _amount;
-
+        protected decimal amount;
+        
         protected const int noAccount = 0; //If it was an deposit or withdrawal from outside of the bank
 
         protected const int fromBank = -1; //If the bank recived or payed interest
-
+        
         public abstract string GetInfo();
 
         public DateTime GetDate()
         {
-            return _date;
+            return date;
         }
 
         public void SaveTransaction()
@@ -37,14 +37,14 @@ namespace BankApp.Transactions
             Encoding win1252 = Encoding.GetEncoding("Windows-1252");
             using( StreamWriter writer = new StreamWriter(fileName, true, win1252))
             {
-                writer.Write(_date.ToString("yyyyMMdd-HHmm"));
-                writer.Write(";" + _amount);
+                writer.Write(date.ToString("yyyyMMdd-HHmm"));
+                writer.Write(";" + amount);
 
                 writer.Write(";" + RecivingAccount);
-                writer.Write(";" + _recivingAccountBalance);
+                writer.Write(";" + recivingAccountBalance);
 
                 writer.Write(";" + SendingAccount);
-                writer.Write(";" + _sendingAccountBalance);
+                writer.Write(";" + sendingAccountBalance);
 
                 writer.WriteLine();
             }

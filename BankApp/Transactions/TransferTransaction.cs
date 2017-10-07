@@ -8,26 +8,26 @@ namespace BankApp.Transactions
             int recivingAccount, decimal recivingAccountBalance,
             int sendingAccount, decimal sendingAccountBalance)
         {
-            _date = date;
-            _amount = amount;
+            base.date = date;
+            base.amount = amount;
 
             RecivingAccount = recivingAccount;
-            _recivingAccountBalance = recivingAccountBalance;
+            base.recivingAccountBalance = recivingAccountBalance;
 
             SendingAccount = sendingAccount;
-            _sendingAccountBalance = sendingAccountBalance;
+            base.sendingAccountBalance = sendingAccountBalance;
         }
 
         public override string GetInfo()
         {
             string text = "";
 
-            text += "Datum: " + _date.ToString("yyyyMMdd-HHmm");
-            text += " | Summa:" + _amount;
+            text += "Datum: " + date.ToString("yyyyMMdd-HHmm");
+            text += " | Summa:" + amount;
             text += " | Från konto: " + SendingAccount;
-            text += " , Saldo: " + _sendingAccountBalance;
+            text += " , Saldo: " + sendingAccountBalance;
             text += " | Till konto: " + RecivingAccount;
-            text += " , Saldo: " + _recivingAccountBalance;
+            text += " , Saldo: " + recivingAccountBalance;
 
             return text;
         }

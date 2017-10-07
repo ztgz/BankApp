@@ -31,6 +31,7 @@ namespace BankApp
             filehandler.LoadData(_customers, _accounts);
         }
 
+        //Calls to save data before bank should be stopped
         public void Close()
         {
             filehandler.SaveData(_customers, _accounts);
@@ -117,6 +118,7 @@ namespace BankApp
             }
         }
 
+        //Set the debt and credit of an account
         public void AccountSetCredit(int accountNumber, decimal creditLimit, decimal debtInterest)
         {
             //Get account

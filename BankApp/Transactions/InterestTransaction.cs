@@ -6,25 +6,25 @@ namespace BankApp.Transactions
     {
         public InterestTransaction(DateTime date, int account, decimal amount, decimal accountBalance)
         {
-            _date = date;
-            _amount = amount;
+            base.date = date;
+            base.amount = amount;
 
             RecivingAccount = account;
-            _recivingAccountBalance = accountBalance;
+            recivingAccountBalance = accountBalance;
 
             SendingAccount = fromBank;
-            _sendingAccountBalance = 0;
+            sendingAccountBalance = 0;
         }
 
         public override string GetInfo()
         {
             string text = "";
 
-            text += "Datum: " + _date.ToString("yyyyMMdd-HHmm");
-            text += " | Summa:" + _amount;
+            text += "Datum: " + date.ToString("yyyyMMdd-HHmm");
+            text += " | Summa:" + amount;
             text += " | (Daglig ränta)";
             text += " | Konto: " + RecivingAccount;
-            text += " , Saldo: " + _recivingAccountBalance;
+            text += " , Saldo: " + recivingAccountBalance;
 
             return text;
         }

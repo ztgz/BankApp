@@ -5,11 +5,11 @@ namespace BankApp
 {
     class Menu
     {
-        private Bank bank;
+        private Bank _bank;
 
         public Menu()
         {
-            bank = new Bank();
+            _bank = new Bank();
         }
 
         public void StartMenu()
@@ -87,11 +87,11 @@ namespace BankApp
                         break;
                     case 20:
                         //Changes the way format files are saved
-                        bank.ChangeSaveFormat();
+                        _bank.ChangeSaveFormat();
                         break;
                     case 0:
                         exitApp = true;
-                        bank.Close();
+                        _bank.Close();
                         break;
                 }
 
@@ -136,7 +136,7 @@ namespace BankApp
             Console.WriteLine("Kundnummer: ");
             int customerNumber = ReadFromKeyboard.GetInt();
 
-            bank.AccountCreate(customerNumber);
+            _bank.AccountCreate(customerNumber);
         }
 
         private void AccountRemoveMenu()
@@ -148,7 +148,7 @@ namespace BankApp
             Console.WriteLine("Ange kontonummer:");
             int accountNum = ReadFromKeyboard.GetInt();
 
-            bank.AccountRemove(accountNum);
+            _bank.AccountRemove(accountNum);
         }
 
         private void AccountSetCreditMenu()
@@ -165,7 +165,7 @@ namespace BankApp
             Console.WriteLine("Vilken skuldränta ska kontot ha:");
             decimal debtInterest = ReadFromKeyboard.GetDecimal();
 
-            bank.AccountSetCredit(accountNumber, creditLimt, debtInterest);
+            _bank.AccountSetCredit(accountNumber, creditLimt, debtInterest);
         }
 
         private void AccountSetInterestMenu()
@@ -178,7 +178,7 @@ namespace BankApp
             Console.WriteLine("Sätt årlig sparränta till:");
             decimal interest = ReadFromKeyboard.GetDecimal();
 
-            bank.AccountSetSavingInterest(accountNumber, interest);
+            _bank.AccountSetSavingInterest(accountNumber, interest);
         }
 
         private void AccountTransactionMenu()
@@ -189,7 +189,7 @@ namespace BankApp
             Console.WriteLine("Se transaktioner för konto, ange konto:");
             int accountNumber = ReadFromKeyboard.GetInt();
 
-            bank.PrintTransactions(accountNumber);
+            _bank.PrintTransactions(accountNumber);
         }
 
         private void CustomerCreateMenu()
@@ -224,7 +224,7 @@ namespace BankApp
             string phone = Console.ReadLine();
 
             //Create the customer
-            bank.CustomerCreate(orgNumber, name, adress, city, region, postNumber, country, phone);
+            _bank.CustomerCreate(orgNumber, name, adress, city, region, postNumber, country, phone);
         }
 
         private void CustomerInfoMenu()
@@ -238,7 +238,7 @@ namespace BankApp
             int searchNumber = ReadFromKeyboard.GetInt();
 
             //Search for the customer
-            bank.CustomerInfo(searchNumber);
+            _bank.CustomerInfo(searchNumber);
         }
 
         private void CustomerRemoveMenu()
@@ -250,7 +250,7 @@ namespace BankApp
             Console.WriteLine("Ange kundnummer:");
             int customerNum = ReadFromKeyboard.GetInt();
 
-            bank.CustomerRemove(customerNum);
+            _bank.CustomerRemove(customerNum);
         }
 
         private void CustomerSearchMenu()
@@ -262,7 +262,7 @@ namespace BankApp
             Console.Write("Namn eller postort: \n> ");
             string customerSearch = Console.ReadLine();
 
-            bank.SearchCustomers(customerSearch);
+            _bank.SearchCustomers(customerSearch);
         }
 
         private void DaliyInterestMenu()
@@ -270,15 +270,15 @@ namespace BankApp
             Console.Clear();
             Console.WriteLine("* Daglig ränta *");
 
-            bank.DailyInterest();           
+            _bank.DailyInterest();           
         }
 
         private void DailyTransactionMenu()
         {
             Console.Clear();
-            Console.WriteLine("* Transaktionshistorik *\n");
+            Console.WriteLine("* Transaktionshistorik *");
 
-            bank.PrintDailyTransactions();
+            _bank.PrintDailyTransactions();
         }
 
         private void DepositMenu()
@@ -292,7 +292,7 @@ namespace BankApp
             Console.WriteLine("Insättningsbelopp:");
             decimal amount = ReadFromKeyboard.GetDecimal();
 
-            bank.Deposit(accountNumber, amount);
+            _bank.Deposit(accountNumber, amount);
         }
 
         private void TransferMoneyMenu()
@@ -311,7 +311,7 @@ namespace BankApp
             decimal amount = ReadFromKeyboard.GetDecimal();
 
             //Try to transfer amount
-            bank.Transfer(fromAccountNumber, toAccountNumber, amount);
+            _bank.Transfer(fromAccountNumber, toAccountNumber, amount);
 
         }
 
@@ -326,7 +326,7 @@ namespace BankApp
             Console.WriteLine("Hur mycket vill du ta ut:");
             decimal amount = ReadFromKeyboard.GetDecimal();
 
-            bank.Withdraw(accountNumber, amount);
+            _bank.Withdraw(accountNumber, amount);
         }
 
     }
