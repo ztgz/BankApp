@@ -19,42 +19,18 @@ namespace BankApp
 
         private Journal _journal; //Keeps track of all transactions that happend
 
+        private Filehandler filehandler; //Saves and read bank data
+
         public Bank()
         {
-            Customer cust = new Customer(1005, "559268-7528", "Berglunds snabbköp", "Berguvsvägen  8",
-                "Luleå", "", "S-958 22", "Sweden", "0921-12 34 65");
-            _customers.Add(cust);
-
-            cust = new Customer(1024, "556392-8406", "Folk och fä HB", "Åkergatan 24",
-                "Bräcke", "", "S-844 67", "Sweden", "0695-34 67 21");
-            _customers.Add(cust);
-
-            cust = new Customer(1032, "551553-1910", "Great Lakes Food Market", "2732 Baker Blvd.",
-                "Eugene", "OR", "97403", "USA", "(503) 555-7555");
-            _customers.Add(cust);
-
-            //Account account = new Account(13019, 1005, 1488.80m);
-            Account account = new Account(13019, 1005, 10000.00m);
-            account.SetCreditLimit(5000);
-            account.SetSavingInterest(2.5m);
-            _accounts.Add(account);
-            account = new Account(13020, 1005, 613.20m);
-            _accounts.Add(account);
-            account = new Account(13093, 1024, 0m);
-            _accounts.Add(account);
-            account = new Account(13128, 1032, 392.20m);
-            _accounts.Add(account);
-            account = new Account(13130, 1032, 4807.00m);
-            _accounts.Add(account);
-            /*
-            account = new Account(13128, 1032, 0m);
-            _accounts.Add(account);
-            account = new Account(13130, 1032, 0.00m);
-            _accounts.Add(account);*/
-
             _journal = new Journal();
+
+            filehandler = new Filehandler();
+           
+            //Load data
+            filehandler.LoadData(_customers, _accounts);
         }
- 
+
         //Create new account
         public void AccountCreate(int customerNumber)
         {
