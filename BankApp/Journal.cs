@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using BankApp.Transactions;
 
 namespace BankApp
@@ -22,19 +19,6 @@ namespace BankApp
             transaction.SaveTransaction();
         }
 
-        /*
-        public void Deposit(int toAccount, decimal amount, decimal accountBalance)
-        {
-            Transaction transaction = new DepositTransaction(DateTime.Now, toAccount, amount, accountBalance);
-            AddTransaction(transaction);
-        }
-
-        public void Withdrawal(int fromAccount, decimal amount, decimal accountBalance)
-        {
-            Transaction transaction = new WithdrawalTransaction(DateTime.Now, fromAccount, amount, accountBalance);
-            AddTransaction(transaction);
-        }
-        */
         public void Transfer(decimal amount, int recivingAccount, decimal recivingAccountBalance,
             int sendingAccount, decimal sendingAccountBalance)
         {
