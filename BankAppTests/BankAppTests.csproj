@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TransferTest.cs" />
+    <Compile Include="InterestTest.cs" />
     <Compile Include="WithdrawalTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
