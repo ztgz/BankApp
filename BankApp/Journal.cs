@@ -19,21 +19,6 @@ namespace BankApp
             transaction.SaveTransaction();
         }
 
-        public void Transfer(decimal amount, int recivingAccount, decimal recivingAccountBalance,
-            int sendingAccount, decimal sendingAccountBalance)
-        {
-            Transaction transaction = new TransferTransaction(DateTime.Now, amount, recivingAccount, recivingAccountBalance,
-                sendingAccount, sendingAccountBalance);
-            AddTransaction(transaction);
-        }
-        /*
-        public void AddInterest(int toAccount, decimal amount, decimal accountBalance)
-        {
-            Transaction transaction = new SaveInterestTransaction(DateTime.Now, toAccount, amount, accountBalance);
-            transaction.SaveTransaction();
-            dailyTransactions.Add(transaction);
-        }*/
-
         public void PrintDailyTransactions()
         {
             DateTime date = DateTime.Now;
