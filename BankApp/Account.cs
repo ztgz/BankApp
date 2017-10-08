@@ -146,11 +146,11 @@ namespace BankApp
 
         public void PrintAccount()
         {
-            Console.Write("{0}: {1} kr", AccountNumber, Balance);
+            Console.Write("{0}: {1:0.00} kr", AccountNumber, Balance);
             if (_saveInterest > 0)
                 Console.Write(", sparränta {0}%", _saveInterest);
             if (_creditLimit > 0)
-                Console.Write(", kreditgräns {0} kr", _creditLimit);
+                Console.Write(", kreditgräns {0:0.00} kr", _creditLimit);
             if (_debtInterest > 0)
                 Console.Write(", skuldränta {0}%", _debtInterest);
 

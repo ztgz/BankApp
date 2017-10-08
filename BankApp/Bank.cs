@@ -40,9 +40,15 @@ namespace BankApp
         //Create new account
         public void AccountCreate(int customerNumber)
         {
+            if (!customerNumber.ValidCustomerNumber())
+            {
+                Console.WriteLine("\n{0} är inte ett riktigt kundnummer.", customerNumber);
+                return;
+            }
+
             if (GetCustomerByNumber(customerNumber) == null)
             {
-                Console.WriteLine("Kund {0} existerar inte.", customerNumber);
+                Console.WriteLine("\nKund {0} existerar inte.", customerNumber);
                 return;
             }
 
@@ -91,7 +97,7 @@ namespace BankApp
             //If it's not valid account number
             if (!accountNumber.ValidAccountNumber())
             {
-                Console.WriteLine("{0} is not an valid account number.", accountNumber);
+                Console.WriteLine("\n{0} is not an valid account number.", accountNumber);
                 return;
             }
 
@@ -202,8 +208,8 @@ namespace BankApp
             int newCustomerNumber = lastCustomerNumber + 1;
 
             //Add the Customer to the list
-            AddCustomer(newCustomerNumber, organisationNumber, name, adress,
-                city, region, postNumber, country, phoneNumber);
+            _customers.Add(new Customer(newCustomerNumber, organisationNumber, name, adress, 
+                city, region, postNumber, country, phoneNumber));
 
             //Info that customer was created
             Console.WriteLine("\nKund {0} skapades", newCustomerNumber);
@@ -233,6 +239,7 @@ namespace BankApp
             else if (!searchNumber.ValidCustomerNumber())
             {
                 Console.WriteLine("\n{0} är varken ett konto eller kundnummer.", searchNumber);
+                return;
             }
 
             //Get info based on owners customer number
@@ -254,7 +261,7 @@ namespace BankApp
                     sum += account.Balance;
                 }
 
-                Console.WriteLine("\nTotalt på alla konton: {0} kr.", sum);
+                Console.WriteLine("\nTotalt på alla konton: {0:0.00} kr.", sum);
             }
             else
             {
@@ -268,7 +275,7 @@ namespace BankApp
             //Check if it's not a valid customer number
             if (!customerNr.ValidCustomerNumber())
             {
-                Console.WriteLine("\n{0} är inte ett kontonummer.", customerNr);
+                Console.WriteLine("\n{0} är inte ett kundnummer.", customerNr);
                 return;
             }
 
@@ -290,7 +297,7 @@ namespace BankApp
             {
                 if (account.Balance != 0)
                 {
-                    Console.WriteLine("\nKundens alla konton har inte 0 i saldo. Kan ej ta bort kund.");
+                    Console.WriteLine("\nKundens alla konton har inte 0 kr i saldo. Kan ej ta bort kund.");
                     return;
                 }
             }
@@ -482,14 +489,6 @@ namespace BankApp
             }
 
             return false;
-        }
-
-        //Add customer to the list of customers
-        private void AddCustomer(int customerNumber, string organisationNumber, string name, string adress,
-            string city, string region, string postNumber, string country, string phoneNumber)
-        {
-            _customers.Add(new Customer(customerNumber, organisationNumber, name, adress, city,
-                region, postNumber, country, phoneNumber));
         }
 
         //Get specific account based on accountnumber

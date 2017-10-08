@@ -22,7 +22,7 @@ namespace BankApp.Transactions
         {
             string text = "";
 
-            text += "Datum: " + date.ToString("yyyyMMdd-HHmm");
+            text += "(Överföring) Datum: " + date.ToString("yyyyMMdd-HHmm");
             text += " | Summa:" + amount;
             text += " | Från konto: " + SendingAccount;
             text += " , Saldo: " + sendingAccountBalance;

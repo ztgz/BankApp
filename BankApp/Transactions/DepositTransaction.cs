@@ -20,9 +20,8 @@ namespace BankApp.Transactions
         {
             string text = "";
 
-            text += "Datum: " + date.ToString("yyyyMMdd-HHmm");
+            text += "(Insättning) Datum: " + date.ToString("yyyyMMdd-HHmm");
             text += " | Summa:" + amount;
-            text += " | (Insättning till konto)";
             text += " | Till konto: " + RecivingAccount;
             text += " , Saldo: " + recivingAccountBalance;
 
