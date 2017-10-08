@@ -160,7 +160,7 @@ namespace BankApp
             int accountNumber = ReadFromKeyboard.GetInt();
 
             Console.WriteLine("Vilken kreditgräns ska kontot ha:");
-            decimal creditLimt = Math.Round(ReadFromKeyboard.GetDecimal(), 2); //Round to even ören
+            decimal creditLimt = Math.Round(ReadFromKeyboard.GetDecimal(), 2); //Round to ören
 
             Console.WriteLine("Vilken skuldränta ska kontot ha:");
             decimal debtInterest = ReadFromKeyboard.GetDecimal();
@@ -290,7 +290,7 @@ namespace BankApp
             int accountNumber = ReadFromKeyboard.GetInt();
 
             Console.WriteLine("Insättningsbelopp:");
-            decimal amount = Math.Round(ReadFromKeyboard.GetDecimal(), 2); //Round to even ören
+            decimal amount = Math.Round(ReadFromKeyboard.GetDecimal(), 2); //Round to ören
 
             _bank.Deposit(accountNumber, amount);
         }
@@ -308,7 +308,7 @@ namespace BankApp
 
             Console.WriteLine("Vilken summa vill du överföra från konto {0} till konto {1}", 
                 fromAccountNumber, toAccountNumber);
-            decimal amount = Math.Round(ReadFromKeyboard.GetDecimal(), 2); //Round to even ören
+            decimal amount = Math.Round(ReadFromKeyboard.GetDecimal(), 2); //Round to ören
 
             //Try to transfer amount
             _bank.Transfer(fromAccountNumber, toAccountNumber, amount);
@@ -324,7 +324,7 @@ namespace BankApp
             int accountNumber = ReadFromKeyboard.GetInt();
 
             Console.WriteLine("Hur mycket vill du ta ut:");
-            decimal amount = Math.Round(ReadFromKeyboard.GetDecimal(), 2); //Round to even ören
+            decimal amount = Math.Round(ReadFromKeyboard.GetDecimal(), 2); //Round to ören
 
             _bank.Withdraw(accountNumber, amount);
         }

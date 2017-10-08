@@ -16,8 +16,8 @@ namespace BankAppTests
 
             account.AddDailyInterest();
 
-            //Numbers from excel, (might have rounding errors)
-            decimal expectedBalance = 10002.6115787607m;
+            //Numbers from excel, 10002.6115787607m 
+            decimal expectedBalance = 10002.61m;
 
             Assert.AreEqual(expectedBalance, account.Balance);
         }
@@ -31,7 +31,6 @@ namespace BankAppTests
 
             account.AddDailyInterest();
 
-            //Numbers from excel, (might have rounding errors)
             decimal expectedBalance = -10_000;
 
             Assert.AreEqual(expectedBalance, account.Balance);
@@ -46,8 +45,8 @@ namespace BankAppTests
 
             account.AddDailyInterest();
 
-            //Numbers from excel, (might have rounding errors)
-            decimal expectedBalance = -10002.6115787607m;
+            //Numbers from excel, -10002.6115787607m 
+            decimal expectedBalance = -10002.61m;
 
             Assert.AreEqual(expectedBalance, account.Balance);
         }
@@ -61,7 +60,6 @@ namespace BankAppTests
 
             account.AddDailyInterest();
 
-            //Numbers from excel, (might have rounding errors)
             decimal expectedBalance = 10000;
 
             Assert.AreEqual(expectedBalance, account.Balance);

@@ -334,11 +334,9 @@ namespace BankApp
         //Deposit to account
         public void Deposit(int accountNumber, decimal amount)
         {
-            if (!AccountExist(accountNumber))
-            {
-                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
+            //Test if valid account number and account exist
+            if(!TestAccountValidity(accountNumber))
                 return;
-            }
 
             if (amount <= 0)
             {
@@ -353,11 +351,11 @@ namespace BankApp
             {
                 //Add to journal
                 _journal.AddTransaction(transaction);
-                Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades.", amount, accountNumber);
+                Console.WriteLine("\nEn insättning på {0:0.00} kr till konto {1} lyckades.", amount, accountNumber);
             }
             else
             {
-                Console.WriteLine("\nEn insättning på {0} kr till konto {1} lyckades inte.", amount, accountNumber);
+                Console.WriteLine("\nEn insättning på {0:0.00} kr till konto {1} lyckades inte.", amount, accountNumber);
             }
         }
 
@@ -414,20 +412,13 @@ namespace BankApp
                 return;
             }
 
+            //Test account number an see if account exist
+            if(!TestAccountValidity(fromAccountNumber) || !TestAccountValidity(toAccountNumber))
+                return;
+
             //Get accounts
             Account senderAcc = GetAccount(fromAccountNumber);
             Account recivingAcc = GetAccount(toAccountNumber);
-
-            //Control that sending and reciving account exist
-            if (senderAcc == null || recivingAcc == null)
-            {
-                if (senderAcc == null)
-                    Console.WriteLine("\nKonto {0} finns inte.", fromAccountNumber);
-                if (recivingAcc == null)
-                    Console.WriteLine("\nKonto {0} finns inte.", toAccountNumber);
-                return;
-            }
-
 
             //Try to transfer from sendingaccount to reciving account
             Transaction transaction = recivingAcc.Transfer(senderAcc, amount);
@@ -437,24 +428,22 @@ namespace BankApp
             {
                 _journal.AddTransaction(transaction);
 
-                Console.WriteLine("\nEn överföring på {0} kr från konto {1} till konto {2} lyckades",
+                Console.WriteLine("\nEn överföring på {0:0.00} kr från konto {1} till konto {2} lyckades",
                     amount, senderAcc.AccountNumber, recivingAcc.AccountNumber);
             }
             else
             {
                 Console.WriteLine("\nTransaktion genomfördes ej.");
-                Console.WriteLine("Kan max överföra {0} kr från konto {1}.", senderAcc.MaxPossibleWithdraw(), senderAcc.AccountNumber);
+                Console.WriteLine("Kan max överföra {0:0.00} kr från konto {1}.", senderAcc.MaxPossibleWithdraw(), senderAcc.AccountNumber);
             }
         }
 
         //Withdraw from account
         public void Withdraw(int accountNumber, decimal amount)
         {
-            if (!AccountExist(accountNumber))
-            {
-                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
+            //Test if valid account number and account exist
+            if (!TestAccountValidity(accountNumber))
                 return;
-            }
 
             if (amount <= 0)
             {
@@ -462,7 +451,7 @@ namespace BankApp
                 return;
             }
 
-            //Try to withdraw, if succesfull - returns an transaction
+            //Try to withdraw, if successful - returns an transaction
             Account account = GetAccount(accountNumber);
             Transaction transaction = account.Withdraw(amount);
 
@@ -470,13 +459,31 @@ namespace BankApp
             {
                 //Add to journal
                 _journal.AddTransaction(transaction);
-                Console.WriteLine("\nEtt uttag på {0} kr från konto {1} lyckades.", amount, accountNumber);
+                Console.WriteLine("\nEtt uttag på {0:0.00} kr från konto {1} lyckades.", amount, accountNumber);
             }
             else
             {
-                Console.WriteLine("\nEtt uttag på {0} kr från konto {1} lyckades inte.", amount, accountNumber);
-                Console.WriteLine("Kan max ta ut {0} kr.", account.MaxPossibleWithdraw());
+                Console.WriteLine("\nEtt uttag på {0:0.00} kr från konto {1} lyckades inte.", amount, accountNumber);
+                Console.WriteLine("Kan max ta ut {0:0.00} kr.", account.MaxPossibleWithdraw());
             }
+        }
+
+        //Test if accountnumber is valid and exist
+        private bool TestAccountValidity(int accountNumber)
+        {
+            if (!accountNumber.ValidAccountNumber())
+            {
+                Console.WriteLine("\n{0} är inte ett riktigt konotnummer.", accountNumber);
+                return false;
+            }
+
+            if (!AccountExist(accountNumber))
+            {
+                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
+                return false;
+            }
+
+            return true;
         }
 
         //Check if a specific account
