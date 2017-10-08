@@ -28,45 +28,40 @@ namespace BankApp
             _creditLimit = 0;
         }
 
-        public void SetCreditLimit(decimal limit)
+        public string SetCreditLimit(decimal limit)
         {
             if (limit < 0)
             {
-                Console.WriteLine("\nKreditgräns måste anges som en icke-negativ siffra.");
+                return "\nKreditgräns måste anges som en icke-negativ siffra.";
             }
-            else
-            {
-                _creditLimit = limit;
-                Console.WriteLine("\nKonto {0} har nu en kreditgräns på {1} kr.", AccountNumber, _creditLimit);
-            }
+
+            _creditLimit = limit;
+            return String.Format("\nKonto {0} har nu en kreditgräns på {1} kr.", AccountNumber, _creditLimit);
+
         }
 
-        public void SetDebtInterest(decimal interest)
+        public string SetDebtInterest(decimal interest)
         {
             if (interest < 0)
             {
-                Console.WriteLine("\nSkuldräntan kan inte vara negativ. Skuldränta {0}% kan inte sättas till konto {1}.",
+                return String.Format("\nSkuldräntan kan inte vara negativ. Skuldränta {0}% kan inte sättas till konto {1}.",
                     interest, AccountNumber);
             }
-            else
-            {
-                _debtInterest = interest;
-                Console.WriteLine("\nSkuldräntan är nu {0}% på konto {1}", _debtInterest, AccountNumber);
-            }
+
+            _debtInterest = interest;
+            return String.Format("\nSkuldräntan är nu {0}% på konto {1}.", _debtInterest, AccountNumber);
         }
 
-        public void SetSavingInterest(decimal interest)
+        public string SetSavingInterest(decimal interest)
         {
             if (interest <= 0)
             {
-                Console.WriteLine("\nSparräntan måste vara positiv. Ränta {0}% kan inte sättas till konto {1}.",
+                return String.Format("\nSparräntan måste vara positiv. Ränta {0}% kan inte sättas till konto {1}.",
                     interest, AccountNumber);
             }
-            else
-            {
-                _saveInterest = interest;
-                Console.WriteLine("\nSparräntan är nu {0}% på konto {1}", _saveInterest, AccountNumber);
-            }
+
+            _saveInterest = interest;
+            return String.Format("\nSparräntan är nu {0}% på konto {1}.", _saveInterest, AccountNumber);
         }
 
         public InterestTransaction AddDailyInterest()

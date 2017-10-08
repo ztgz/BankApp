@@ -10,9 +10,9 @@ namespace BankApp
 {
     class Filehandler
     {
-        private const string fileName = @"files\bankdata-small.txt";
+        //private const string fileName = @"files\bankdata-small.txt";
         //private const string fileName = @"files\bankdata.txt";
-        //private const string fileName = @"files\20171007-0228.txt";
+        private const string fileName = @"files\20171008-0353.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -58,6 +58,7 @@ namespace BankApp
                     accounts.Add(AccountCreate(line));
                 }
 
+                Console.Clear();
                 PrintStatistics(customers,accounts);
 
             }

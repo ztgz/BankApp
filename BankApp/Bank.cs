@@ -127,9 +127,12 @@ namespace BankApp
             if (account != null)
             {
                 //Change creditlimit
-                account.SetCreditLimit(creditLimit);
+                string text = account.SetCreditLimit(creditLimit);
+                Console.WriteLine(text);
+
                 //Change interest
-                account.SetDebtInterest(debtInterest);
+                text = account.SetDebtInterest(debtInterest);
+                Console.WriteLine(text);
             }
             else
             {
@@ -150,7 +153,9 @@ namespace BankApp
             }
             else
             {
-                GetAccount(accountNumber).SetSavingInterest(interest);
+                //Try to set saving interest to account, returns a message
+                string text = GetAccount(accountNumber).SetSavingInterest(interest);
+                Console.WriteLine(text);
             }
         }
 
