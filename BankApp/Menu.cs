@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using BankApp.Extensions;
 
 namespace BankApp
@@ -205,7 +206,7 @@ namespace BankApp
         {
             Console.Clear();
             Console.WriteLine("* Skapa ny kund *");
-
+            
             //Get customer number info
             Console.WriteLine("Organisationsnummer?");
             string orgNumber = ReadFromKeyboard.GetString();
@@ -222,15 +223,19 @@ namespace BankApp
             //It's optional the input region
             Console.Write("Region?\n> ");
             string region = Console.ReadLine();
+            region = Regex.Replace(region, ";", "");
 
             Console.WriteLine("Postnummer?");
             string postNumber = ReadFromKeyboard.GetString();
 
             Console.Write("Land?\n> ");
             string country = Console.ReadLine();
+            country = Regex.Replace(country, ";", "");
 
             Console.Write("Telefon?\n> ");
             string phone = Console.ReadLine();
+            phone = Regex.Replace(phone, ";", "");
+
 
             //Create the customer
             _bank.CustomerCreate(orgNumber, name, adress, city, region, postNumber, country, phone);

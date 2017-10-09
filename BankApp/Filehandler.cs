@@ -12,7 +12,7 @@ namespace BankApp
     {
         //private const string fileName = @"files\bankdata-small.txt";
         //private const string fileName = @"files\bankdata.txt";
-        private const string fileName = @"files\20171009-1028.txt";
+        private const string fileName = @"files\20171009-1036.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -57,9 +57,6 @@ namespace BankApp
                     string line = reader.ReadLine();
                     accounts.Add(AccountCreate(line));
                 }
-
-                PrintStatistics(customers,accounts);
-
             }
             catch (FileNotFoundException)
             {
@@ -81,16 +78,65 @@ namespace BankApp
                 reader?.Close();
             }
 
+            PrintStatistics(customers, accounts);
+
         }
+
+
+        //public void SaveData(List<Customer> customers, List<Account> accounts)
+        //{
+        //    string file = @"files\" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
+
+        //    Console.WriteLine("Sparar " + file.Substring(6));
+
+        //    using (StreamWriter writer = new StreamWriter(file, false, win1252))
+        //    {
+        //        int numberOfCustomers = customers.Count;
+        //        int numberOfAccounts = accounts.Count;
+
+        //        writer.WriteLine(numberOfCustomers);
+
+        //        foreach (var customer in customers)
+        //        {
+        //            writer.WriteLine(customer.ToString());
+        //        }
+
+        //        writer.WriteLine(numberOfAccounts);
+
+        //        foreach (var account in accounts)
+        //        {
+        //            writer.WriteLine(account.ToSaveFormat(_detailed));
+        //        }
+
+        //        /*for (int i = 0; i < customers.Count; i++)
+        //        {
+        //            writer.WriteLine(customers[i].ToString());
+        //        }
+
+        //        writer.WriteLine(numberOfAccounts);
+
+        //        for (int i = 0; i < accounts.Count; i++)
+        //        {
+        //            writer.WriteLine(accounts[i].ToSaveFormat(_detailed));
+        //        }*/
+
+        //    }
+
+        //    PrintStatistics(customers, accounts);
+        //}
 
         public void SaveData(List<Customer> customers, List<Account> accounts)
         {
-            string file = @"files\" + DateTime.Now.ToString("yyyyMMdd-hhmm") + ".txt";
+            string file = @"files\" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
 
-            Console.WriteLine("Sparar " + file.Substring(6));
 
-            using (StreamWriter writer = new StreamWriter(file, false, win1252))
+            StreamWriter writer = null;
+            try
             {
+                Console.WriteLine("Sparar " + file.Substring(6));
+
+                writer = new StreamWriter(file, false, win1252);
+
                 int numberOfCustomers = customers.Count;
                 int numberOfAccounts = accounts.Count;
 
@@ -108,20 +154,17 @@ namespace BankApp
                     writer.WriteLine(account.ToSaveFormat(_detailed));
                 }
 
-                /*for (int i = 0; i < customers.Count; i++)
-                {
-                    writer.WriteLine(customers[i].ToString());
-                }
-
-                writer.WriteLine(numberOfAccounts);
-
-                for (int i = 0; i < accounts.Count; i++)
-                {
-                    writer.WriteLine(accounts[i].ToSaveFormat(_detailed));
-                }*/
-
-                PrintStatistics(customers, accounts);
             }
+            catch (Exception)
+            {
+                Console.WriteLine("\nNågot gick fel när fil sparades.");
+            }
+            finally
+            {
+                writer?.Close();
+            }
+
+            PrintStatistics(customers, accounts);
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace BankApp.Extensions
 {
@@ -27,7 +28,7 @@ namespace BankApp.Extensions
             {
                 Console.Write("> ");
                 string input = Console.ReadLine();
-
+                input = Regex.Replace(input, ";", "");
                 if (input != "")
                     return input;
 
