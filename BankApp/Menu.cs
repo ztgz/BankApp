@@ -111,22 +111,28 @@ namespace BankApp
         private void PrintMainMenu()
         {
             Console.WriteLine("HUVUDMENY");
-            Console.WriteLine("0) Avsluta och spara");
+            Console.WriteLine("----------------------------------------------");
             Console.WriteLine("1) Sök kund");
             Console.WriteLine("2) Visa kundbild");
+            Console.WriteLine("----------------------------------------------");
             Console.WriteLine("3) Skapa kund");
             Console.WriteLine("4) Ta bort kund");
             Console.WriteLine("5) Lägg till konto");
             Console.WriteLine("6) Ta bort konto");
+            Console.WriteLine("----------------------------------------------");
             Console.WriteLine("7) Insättning på konto");
             Console.WriteLine("8) Uttag från konto");
             Console.WriteLine("9) Överföring mellan konton");
+            Console.WriteLine("----------------------------------------------");
             Console.WriteLine("10) Daglig transaktions historik");
             Console.WriteLine("11) Visa transaktioner för konto");
+            Console.WriteLine("----------------------------------------------");
             Console.WriteLine("12) Ange sparränta på konto");
             Console.WriteLine("13) Daglig ränta");
             Console.WriteLine("14) Ange kreditgräns och skuldränta på konto");
+            Console.WriteLine("----------------------------------------------");
             Console.WriteLine("20) Ändra sparformat");
+            Console.WriteLine("0) Avsluta och spara");
             Console.WriteLine();
         }
 

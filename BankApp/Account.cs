@@ -26,6 +26,8 @@ namespace BankApp
             Balance = balance;
 
             _creditLimit = 0;
+            _debtInterest = 0;
+            _saveInterest = 0;
         }
 
         public string SetCreditLimit(decimal limit)
@@ -64,7 +66,7 @@ namespace BankApp
             return String.Format("\nSparräntan är nu {0}% på konto {1}.", _saveInterest, AccountNumber);
         }
 
-        public InterestTransaction AddDailyInterest()
+        /*public InterestTransaction AddDailyInterest()
         {
             //Calculate the interest
             //If debt
@@ -103,6 +105,38 @@ namespace BankApp
                 return transaction;
             }
 
+            return null;
+        }*/
+
+        public InterestTransaction AddDailyInterest()
+        {
+            decimal dailyInterest = 0;
+            //Calculate the interest
+            //If debt
+            if (Balance < 0 && _debtInterest > 0)
+            {
+                dailyInterest = (decimal)Math.Pow(1 + (double)_debtInterest / 100.0, 1.0 / 365.0) - 1;
+                Console.WriteLine("Skuldränta har tagits ifrån konto {0}.", AccountNumber);
+            }
+            //If savings
+            else if (Balance > 0 && _saveInterest > 0)
+            {
+                dailyInterest = (decimal)Math.Pow(1 + (double)_saveInterest / 100.0, 1.0 / 365.0) - 1;
+                Console.WriteLine("Sparränta har adderats till konto {0}.", AccountNumber);
+            }
+
+            if (dailyInterest != 0)
+            {
+                //How much to remove from the account (Balance is negative => amount is negative)
+                decimal amount = Math.Round(Balance * dailyInterest, 2);
+
+                //Positive if balance is positive, negative if balance is negative
+                Balance = Balance + amount;
+
+                InterestTransaction transaction = new InterestTransaction(DateTime.Now, AccountNumber, +amount, Balance);
+                return transaction;
+            }
+            
             return null;
         }
 

@@ -12,7 +12,7 @@ namespace BankApp
     {
         //private const string fileName = @"files\bankdata-small.txt";
         private const string fileName = @"files\bankdata.txt";
-        //private const string fileName = @"files\20171009-0951.txt";
+        //private const string fileName = @"files\20171009-0957.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -185,6 +185,5 @@ namespace BankApp
             Console.ReadKey();
         }
 
-        
     }
 }
