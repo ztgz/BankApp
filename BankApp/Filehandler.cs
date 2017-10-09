@@ -12,7 +12,7 @@ namespace BankApp
     {
         //private const string fileName = @"files\bankdata-small.txt";
         //private const string fileName = @"files\bankdata.txt";
-        private const string fileName = @"files\20171009-1036.txt";
+        private const string fileName = @"files\20171009-1711.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -82,7 +82,6 @@ namespace BankApp
 
         }
 
-
         //public void SaveData(List<Customer> customers, List<Account> accounts)
         //{
         //    string file = @"files\" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
@@ -129,8 +128,8 @@ namespace BankApp
         {
             string file = @"files\" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
 
-
             StreamWriter writer = null;
+
             try
             {
                 Console.WriteLine("Sparar " + file.Substring(6));
