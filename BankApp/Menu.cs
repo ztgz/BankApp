@@ -94,7 +94,7 @@ namespace BankApp
                         _bank.Close();
                         break;
                     default:
-                        Console.WriteLine("\n Ogiltigt val.");
+                        Console.WriteLine("\nOgiltigt val.");
                         break;
                 }
 

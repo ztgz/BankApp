@@ -41,7 +41,8 @@ namespace BankApp
 
         public void PrintCustomer()
         {
-            Console.WriteLine("\nOrganistionsnummer: {0}", _organisationNumber);
+            Console.WriteLine("\nKundnummer: {0}", CustomerNumber);
+            Console.WriteLine("Organistionsnummer: {0}", _organisationNumber);
             Console.WriteLine("Namn: {0}", Name);
             Console.WriteLine("Adress: {0}, {1}, {2}, {3}{4}", _address, _postNumber, City,
                 (_region != "" ? $"{_region}, " : ""), _country);

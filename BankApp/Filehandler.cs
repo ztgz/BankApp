@@ -11,8 +11,8 @@ namespace BankApp
     class Filehandler
     {
         //private const string fileName = @"files\bankdata-small.txt";
-        private const string fileName = @"files\bankdata.txt";
-        //private const string fileName = @"files\20171009-0957.txt";
+        //private const string fileName = @"files\bankdata.txt";
+        private const string fileName = @"files\20171009-1028.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -96,7 +96,19 @@ namespace BankApp
 
                 writer.WriteLine(numberOfCustomers);
 
-                for (int i = 0; i < customers.Count; i++)
+                foreach (var customer in customers)
+                {
+                    writer.WriteLine(customer.ToString());
+                }
+
+                writer.WriteLine(numberOfAccounts);
+
+                foreach (var account in accounts)
+                {
+                    writer.WriteLine(account.ToSaveFormat(_detailed));
+                }
+
+                /*for (int i = 0; i < customers.Count; i++)
                 {
                     writer.WriteLine(customers[i].ToString());
                 }
@@ -106,7 +118,7 @@ namespace BankApp
                 for (int i = 0; i < accounts.Count; i++)
                 {
                     writer.WriteLine(accounts[i].ToSaveFormat(_detailed));
-                }
+                }*/
 
                 PrintStatistics(customers, accounts);
             }
