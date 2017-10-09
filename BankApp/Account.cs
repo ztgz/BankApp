@@ -73,7 +73,7 @@ namespace BankApp
                 //Yearly interest to daily interest
                 decimal dailyInterest = (decimal)Math.Pow(1 + (double)_debtInterest / 100.0, 1.0 / 365.0) - 1;
 
-                //How much to remove from the account (Balance is negative => amount is negativ)
+                //How much to remove from the account (Balance is negative => amount is negative)
                 decimal amount = Math.Round(Balance * dailyInterest, 2);
 
                 //Remove the rent to the account

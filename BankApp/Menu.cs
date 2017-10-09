@@ -93,6 +93,9 @@ namespace BankApp
                         exitApp = true;
                         _bank.Close();
                         break;
+                    default:
+                        Console.WriteLine("\n Ogiltigt val.");
+                        break;
                 }
 
                 //Holds the menu so it dosen't restart

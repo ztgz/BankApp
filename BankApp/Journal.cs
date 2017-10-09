@@ -25,7 +25,7 @@ namespace BankApp
         {
             DateTime date = DateTime.Now;
             
-            //Filter it incase that the system has been running for more than one day
+            //Filter it, incase that the system has been running for more than one day
             _dailyTransactions = _dailyTransactions.Where(t => t.GetDate().Day == date.Day
                                                              && t.GetDate().Month == date.Month &&
                                                              t.GetDate().Year == date.Year).ToList();

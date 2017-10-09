@@ -19,22 +19,22 @@ namespace BankApp
 
         private Journal _journal; //Keeps track of all transactions that happend
 
-        private Filehandler filehandler; //Saves and read bank data
+        private Filehandler _filehandler; //Saves and read bank data
 
         public Bank()
         {
             _journal = new Journal();
 
-            filehandler = new Filehandler();
+            _filehandler = new Filehandler();
            
             //Load data
-            filehandler.LoadData(_customers, _accounts);
+            _filehandler.LoadData(_customers, _accounts);
         }
 
         //Calls to save data before bank should be stopped
         public void Close()
         {
-            filehandler.SaveData(_customers, _accounts);
+            _filehandler.SaveData(_customers, _accounts);
         }
 
         //Create new account
@@ -94,70 +94,70 @@ namespace BankApp
         //Try to remove a specific account
         public void AccountRemove(int accountNumber)
         {
-            //If it's not valid account number
-            if (!accountNumber.ValidAccountNumber())
-            {
-                Console.WriteLine("\n{0} is not an valid account number.", accountNumber);
+            //!Valid account number or and existing account?
+            if (!TestAccountValidity(accountNumber))
                 return;
+
+            for (int i = 0; i < _accounts.Count; i++)
+            {
+                if (_accounts[i].AccountNumber == accountNumber)
+                {
+
+                    if (_accounts[i].Balance == 0.0m)
+                    {
+                        _accounts.RemoveAt(i);
+                        Console.WriteLine("\nKonto {0} raderades.", accountNumber);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nKunde inte ta bort konto {0}, kontots saldo är ej 0.", accountNumber);
+                    }
+
+                    break;
+                }
             }
 
-            //If account exsits
-            if (AccountExist(accountNumber))
+            /*
+            int numberOfAccounts = _accounts.Count;
+            
+            //Keep all accounts except if it has the specified account number and zero balance
+            _accounts = _accounts.Where(a => a.AccountNumber != accountNumber || a.Balance != 0).ToList();
+
+            if (numberOfAccounts > _accounts.Count)
             {
-                int numberOfAccounts = _accounts.Count;
-
-                //Keep all accounts except if it has the specified account number and zero balance
-                _accounts = _accounts.Where(a => a.AccountNumber != accountNumber || a.Balance != 0).ToList();
-
-                if (numberOfAccounts > _accounts.Count)
-                {
-                    Console.WriteLine("\nKonto {0} raderades.", accountNumber);
-                }
-                else
-                {
-                    Console.WriteLine("\nKunde inte ta bort konto {0}, kontots saldo är ej 0.", accountNumber);
-                }
+                Console.WriteLine("\nKonto {0} raderades.", accountNumber);
             }
             else
             {
-                Console.WriteLine("\nKonto {0} finns inte.", accountNumber);
+                Console.WriteLine("\nKunde inte ta bort konto {0}, kontots saldo är ej 0.", accountNumber);
             }
+            */
         }
 
         //Set the debt and credit of an account
         public void AccountSetCredit(int accountNumber, decimal creditLimit, decimal debtInterest)
         {
+            //!Valid account number or and existing account?
+            if(!TestAccountValidity(accountNumber))
+                return;
+
             //Get account
             Account account = GetAccount(accountNumber);
 
-            if (account != null)
-            {
-                //Change creditlimit
-                string text = account.SetCreditLimit(creditLimit);
-                Console.WriteLine(text);
+            //Change creditlimit
+            string text = account.SetCreditLimit(creditLimit);
+            Console.WriteLine(text);
 
-                //Change interest
-                text = account.SetDebtInterest(debtInterest);
-                Console.WriteLine(text);
-            }
-            else
-            {
-                Console.WriteLine("Konto {0} existerar inte.", accountNumber);
-            }
+            //Change interest
+            text = account.SetDebtInterest(debtInterest);
+            Console.WriteLine(text);
+
         }
 
         //Set saving interest for an account
         public void AccountSetSavingInterest(int accountNumber, decimal interest)
         {
-            if (!accountNumber.ValidAccountNumber())
-            {
-                Console.WriteLine("{0} är inte ett korrekt kontonummer.", accountNumber);
-            }
-            else if (!AccountExist(accountNumber))
-            {
-                Console.WriteLine("Konto {0} existerar inte.", accountNumber);
-            }
-            else
+            if (TestAccountValidity(accountNumber))
             {
                 //Try to set saving interest to account, returns a message
                 string text = GetAccount(accountNumber).SetSavingInterest(interest);
@@ -168,7 +168,7 @@ namespace BankApp
         //changes the save format
         public void ChangeSaveFormat()
         {
-            filehandler.ChangeFormat();
+            _filehandler.ChangeFormat();
         }
 
         //Create new customer
@@ -468,24 +468,6 @@ namespace BankApp
             }
         }
 
-        //Test if accountnumber is valid and exist
-        private bool TestAccountValidity(int accountNumber)
-        {
-            if (!accountNumber.ValidAccountNumber())
-            {
-                Console.WriteLine("\n{0} är inte ett riktigt konotnummer.", accountNumber);
-                return false;
-            }
-
-            if (!AccountExist(accountNumber))
-            {
-                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
-                return false;
-            }
-
-            return true;
-        }
-
         //Check if a specific account
         private bool AccountExist(int accountNumber)
         {
@@ -518,6 +500,24 @@ namespace BankApp
         {
             Customer customer = _customers.SingleOrDefault(c => c.CustomerNumber == customerNumber);
             return customer;
+        }
+
+        //Test if accountnumber is valid and exist
+        private bool TestAccountValidity(int accountNumber)
+        {
+            if (!accountNumber.ValidAccountNumber())
+            {
+                Console.WriteLine("\n{0} är inte ett riktigt kontonummer.", accountNumber);
+                return false;
+            }
+
+            if (!AccountExist(accountNumber))
+            {
+                Console.WriteLine("\nKonto med kontonummer {0} existerar inte.", accountNumber);
+                return false;
+            }
+
+            return true;
         }
     }
 }

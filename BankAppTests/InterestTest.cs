@@ -64,5 +64,21 @@ namespace BankAppTests
 
             Assert.AreEqual(expectedBalance, account.Balance);
         }
+
+        [TestMethod]
+        public void Daily_Debt_Interest_Below_CreditLimit()
+        {
+            Account account = new Account(0, 0, -10_000);
+
+            account.SetDebtInterest(10);
+            account.SetCreditLimit(10000);
+
+            account.AddDailyInterest();
+
+            //Numbers from excel, -10002.6115787607m 
+            decimal expectedBalance = -10002.61m;
+
+            Assert.AreEqual(expectedBalance, account.Balance);
+        }
     }
 }

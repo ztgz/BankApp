@@ -12,7 +12,7 @@ namespace BankApp
     {
         //private const string fileName = @"files\bankdata-small.txt";
         private const string fileName = @"files\bankdata.txt";
-        //private const string fileName = @"files\20171008-0353.txt";
+        //private const string fileName = @"files\20171009-0951.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -170,6 +170,7 @@ namespace BankApp
 
         private void PrintStatistics(List<Customer> customers, List<Account> accounts)
         {
+
             decimal sum = 0;
             foreach (var account in accounts)
             {
