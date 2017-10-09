@@ -127,10 +127,9 @@ namespace BankApp
 
             if (dailyInterest != 0)
             {
-                //How much to remove from the account (Balance is negative => amount is negative)
+                //How much to add/remove from the account (Balance is negative => amount is negative)
                 decimal amount = Math.Round(Balance * dailyInterest, 2);
 
-                //Positive if balance is positive, negative if balance is negative
                 Balance = Balance + amount;
 
                 InterestTransaction transaction = new InterestTransaction(DateTime.Now, AccountNumber, +amount, Balance);
