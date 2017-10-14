@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BankApp
 {
     class Filehandler
     {
         //private const string fileName = @"files\bankdata-small.txt";
-        //private const string fileName = @"files\bankdata.txt";
-        private const string fileName = @"files\20171009-1711.txt";
+        private const string fileName = @"files\bankdata.txt";
+        //private const string fileName = @"files\20171009-1711.txt";
         private Encoding win1252;
 
         private bool _detailed; //If saving in detailed (new format) or not detailed (old format)
@@ -156,7 +154,7 @@ namespace BankApp
             }
             catch (Exception)
             {
-                Console.WriteLine("\nNågot gick fel när fil sparades.");
+                Console.WriteLine("\nNågot gick fel när fil sparades. Sparad fil kan vara skadad.");
             }
             finally
             {

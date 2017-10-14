@@ -340,7 +340,7 @@ namespace BankApp
             }
 
             //Try to deposit, if succesfull - returns an transaction
-            Transaction transaction = GetAccount(accountNumber).Deposit(amount);
+            Transaction transaction = GetAccount(accountNumber).TryDeposit(amount);
 
             if (transaction != null)
             {
@@ -448,7 +448,7 @@ namespace BankApp
 
             //Try to withdraw, if successful - returns an transaction
             Account account = GetAccount(accountNumber);
-            Transaction transaction = account.Withdraw(amount);
+            Transaction transaction = account.TryWithdraw(amount);
 
             if (transaction != null)
             {

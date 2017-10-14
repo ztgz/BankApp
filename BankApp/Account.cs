@@ -139,7 +139,7 @@ namespace BankApp
             return null;
         }
 
-        public DepositTransaction Deposit(decimal amount)
+        public DepositTransaction TryDeposit(decimal amount)
         {
             //Cannot deposit a nonpositive number
             if (amount <= 0)
@@ -149,7 +149,7 @@ namespace BankApp
             return new DepositTransaction(DateTime.Now, AccountNumber, amount, Balance);
         }
 
-        public WithdrawalTransaction Withdraw(decimal amount)
+        public WithdrawalTransaction TryWithdraw(decimal amount)
         {
             //No negative amounts cannot be withdrawn from account (or zero)
             //or balance would be to low
@@ -166,9 +166,9 @@ namespace BankApp
         public TransferTransaction Transfer(Account sendingAccount, decimal amount)
         {
             //Try to withdraw from sendningAccount & if withdrawal from account was succesfull
-            if (sendingAccount.Withdraw(amount) != null)
+            if (sendingAccount.TryWithdraw(amount) != null)
             {
-                Deposit(amount);
+                TryDeposit(amount);
                 
                 return new TransferTransaction(DateTime.Now, amount, AccountNumber, Balance,
                     sendingAccount.AccountNumber, sendingAccount.Balance);
